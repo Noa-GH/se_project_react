@@ -17,11 +17,8 @@ module.exports = {
       "warn",
       { allowConstantExport: true },
     ],
+
+    // Disable prop-types requirement
     "react/prop-types": "off",
   },
-  overrides: [
-    {
-      files: ["*.ts", "*.tsx"],
-    },
-  ],
 };
