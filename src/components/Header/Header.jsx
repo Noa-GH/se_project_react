@@ -1,5 +1,6 @@
 import "./Header.css";
-
+import logo from "../../assets/icons/logo/Logo.svg";
+import avatar from "../../assets/icons/avatar-icons/AviPlaceholderTrue.svg";
 const currentDate = new Date().toLocaleDateString("default", {
   day: "numeric",
   month: "long",
@@ -12,7 +13,7 @@ function Header({ onAddClothesClick }) {
   return (
     <header className="header">
       <div className="header__logo">
-        <img src="../../assets/icons/logo/Logo.svg" alt="Site logo-icon" />
+        <img src={logo} alt="Site logo-icon" />
       </div>
       <div className="header__info">
         <p className="header__info-text">{currentDate},</p>
@@ -25,10 +26,7 @@ function Header({ onAddClothesClick }) {
       </div>
       <div className="header__avatar">
         <p className="header__avatar-user_text">{user}</p>
-        <img
-          src="../../assets/icons/avatar/AviPlaceholderTrue.svg"
-          alt="Avatar-icon"
-        />
+        <img src={avatar} alt="Avatar-icon" />
       </div>
     </header>
   );
