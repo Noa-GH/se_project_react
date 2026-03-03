@@ -1,9 +1,9 @@
 .weather-card {
   display: flex;
-  height: 80px;
-  min-height: 80px;
+  flex-direction: row;
+  margin: 0;
+  padding: 0;
   position: relative;
-  flex-shrink: 0;
 }
 
 .weather-card__temp-text {
@@ -13,18 +13,19 @@
   letter-spacing: 0;
   color: #ffffff;
   margin: 0;
+  padding: 20px;
   z-index: 1;
   position: absolute;
-  top: 20px;
-  left: 2rem;
+  top: 0;
+  left: 0;
 }
 
 .weather-card__image {
   object-fit: contain;
   width: 100%;
-  height: 100%;
-  flex-shrink: 0;
+  height: 80px;
   z-index: 0;
+  border-radius: 12px;
 }
 
 /* @media screen and (max-width: 768px) {

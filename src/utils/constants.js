@@ -99,15 +99,3 @@ const defaultClothingItems = [
 ];
 
 export { defaultClothingItems };
-
-export const coordinates = {
-  latitude: 40.7128,
-  longitude: -74.006,
-};
-
-export const APIkey = "ae6330cd4fbc32f1172753d6a6a5f7ec";
-
-// const weatherApiUrl =
-//   "https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&units=imperial&appid=${APIkey}";
-
-// export { weatherApiUrl };
