@@ -20,7 +20,7 @@ function WeatherCard({ weatherData }) {
 
   return (
     <section className="weather-card">
-      <p className="weather-card__temp-text">{weatherData.temp.F}° F</p>
+      <p className="weather-card__temp-text">{weatherData.temp.F}&deg; F</p>
       <img
         src={weatherImage}
         alt={weatherData.type || "weather icon"}
