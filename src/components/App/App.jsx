@@ -4,10 +4,14 @@ import Main from "../Main/Main";
 import Footer from "../Footer/Footer";
 import ModalWithForm from "../ModalWithForm/ModalWithForm";
 import ItemModal from "../ItemModal/ItemModal";
+// import getWeatherData from "../../utils/weatherApi";
+import { getWeatherData } from "../../utils/weatherApi";
+import { coordinates, APIkey } from "../../utils/constants";
 
 import { useState, useEffect } from "react";
 
 function App() {
+  // Default state matches the structure used in Main.jsx
   const [weatherData, setWeatherData] = useState({ temp: { F: 75 } });
   const [activeModal, setActiveModal] = useState("");
   const [selectedCard, setSelectedCard] = useState({});
@@ -39,28 +43,56 @@ function App() {
     return () => document.removeEventListener("keydown", handleKeyDown);
   }, [activeModal]);
 
+  // Fetch weather data on component mount
+  useEffect(() => {
+    getWeatherData(coordinates, APIkey)
+      .then((data) => {
+        // Transform API response to match expected structure
+        // OpenWeatherMap returns temperature as data.main.temp (in Fahrenheit)
+        setWeatherData({ temp: { F: Math.round(data.main.temp) } });
+      })
+      .catch((error) => {
+        console.error("Failed to fetch weather data:", error);
+        // Keep fallback data if fetch fails
+      });
+  }, []);
+
+  // useEffect(() => {
+  //   // Simulate fetching weather data
+  //   const fetchWeatherData = async () => {
+  //     // Simulated delay
+  //     await new Promise((resolve) => setTimeout(resolve, 1000));
+  //     // Set mock weather data
+  //     setWeatherData({ temp: { F: 75 } });
+  //   };
+
+  //   fetchWeatherData();
+  // }, []);
+
   return (
-    <div className="page">
-      <div className="page__content">
-        <Header onAddClothesClick={handleOpenAddClothesModal} />
-        <Main weatherData={weatherData} onCardClick={handleCardClick} />
-        <Footer />
+    <>
+      <div className="page">
+        <div className="page__content">
+          <Header onAddClothesClick={handleOpenAddClothesModal} />
+          <Main weatherData={weatherData} onCardClick={handleCardClick} />
+          <Footer />
+        </div>
+        <ModalWithForm
+          title="New Garment"
+          name="add-garment"
+          buttonText="Add garment"
+          isOpen={activeModal === "add-garment"}
+          onClose={handleCloseModal}
+        >
+          {/* Form inputs will go here as children */}
+        </ModalWithForm>
+        <ItemModal
+          isOpen={activeModal === "preview"}
+          onClose={handleCloseModal}
+          selectedCard={selectedCard}
+        />
       </div>
-      <ModalWithForm
-        title="New Garment"
-        name="add-garment"
-        buttonText="Add garment"
-        isOpen={activeModal === "add-garment"}
-        onClose={handleCloseModal}
-      >
-        {/* Form inputs will go here as children */}
-      </ModalWithForm>
-      <ItemModal
-        isOpen={activeModal === "preview"}
-        onClose={handleCloseModal}
-        selectedCard={selectedCard}
-      />
-    </div>
+    </>
   );
 }
 
