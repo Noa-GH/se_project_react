@@ -6,10 +6,10 @@ const currentDate = new Date().toLocaleDateString("default", {
   month: "long",
 });
 
-const city = "New York";
+const city = "";
 const user = "Noah";
 
-function Header({ onAddClothesClick }) {
+function Header({ onAddClothesClick, weatherData}) {
   return (
     <header className="header">
       <div className="header__logo">
@@ -17,7 +17,7 @@ function Header({ onAddClothesClick }) {
       </div>
       <div className="header__info">
         <p className="header__info-text">{currentDate},</p>
-        <p className="header__info-text">{city}</p>
+        <p className="header__info-text">{weatherData.city}</p>
       </div>
       <div className="header__nav">
         <button className="header__nav-button" onClick={onAddClothesClick}>

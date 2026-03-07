@@ -1,5 +1,5 @@
 import "./ModalWithForm.css";
-import closeButton from "../../assets/icons/close-button.svg";
+import closeButton from "../../assets/icons/Close-button.svg";
 
 function ModalWithForm({ title, name, buttonText, isOpen, onClose, children }) {
   // Close when the overlay (modal backdrop) is clicked, but not the inner content
