@@ -4,17 +4,17 @@ import Main from "../Main/Main";
 import Footer from "../Footer/Footer";
 import ModalWithForm from "../ModalWithForm/ModalWithForm";
 import ItemModal from "../ItemModal/ItemModal";
-// import getWeatherData from "../../utils/weatherApi";
 import { getWeatherData } from "../../utils/weatherApi";
 import { coordinates, APIkey } from "../../utils/constants";
-
 import { useState, useEffect } from "react";
+import { defaultClothingItems } from "../../utils/constants";
 
 function App() {
   // Default state matches the structure used in Main.jsx
-  const [weatherData, setWeatherData] = useState({ temp: { F: 75 } });
+  const [weatherData, setWeatherData] = useState({ temp: { F: 75 }, city: "" });
   const [activeModal, setActiveModal] = useState("");
   const [selectedCard, setSelectedCard] = useState({});
+  const [clothingItems, setClothingItems] = useState(defaultClothingItems);
 
   function handleOpenAddClothesModal() {
     setActiveModal("add-garment");
@@ -49,7 +49,10 @@ function App() {
       .then((data) => {
         // Transform API response to match expected structure
         // OpenWeatherMap returns temperature as data.main.temp (in Fahrenheit)
-        setWeatherData({ temp: { F: Math.round(data.main.temp) } });
+        setWeatherData({
+          temp: { F: Math.round(data.main.temp) },
+          city: data.name,
+        });
       })
       .catch((error) => {
         console.error("Failed to fetch weather data:", error);
@@ -57,24 +60,19 @@ function App() {
       });
   }, []);
 
-  // useEffect(() => {
-  //   // Simulate fetching weather data
-  //   const fetchWeatherData = async () => {
-  //     // Simulated delay
-  //     await new Promise((resolve) => setTimeout(resolve, 1000));
-  //     // Set mock weather data
-  //     setWeatherData({ temp: { F: 75 } });
-  //   };
-
-  //   fetchWeatherData();
-  // }, []);
-
   return (
     <>
       <div className="page">
         <div className="page__content">
-          <Header onAddClothesClick={handleOpenAddClothesModal} />
-          <Main weatherData={weatherData} onCardClick={handleCardClick} />
+          <Header
+            onAddClothesClick={handleOpenAddClothesModal}
+            weatherData={weatherData}
+          />
+          <Main
+            weatherData={weatherData}
+            onCardClick={handleCardClick}
+            clothingItems={clothingItems}
+          />
           <Footer />
         </div>
         <ModalWithForm
