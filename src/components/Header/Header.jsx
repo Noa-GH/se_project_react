@@ -6,14 +6,13 @@ const currentDate = new Date().toLocaleDateString("default", {
   month: "long",
 });
 
-const city = "";
 const user = "Noah";
 
-function Header({ onAddClothesClick, weatherData}) {
+function Header({ onAddClothesClick, weatherData }) {
   return (
     <header className="header">
       <div className="header__logo">
-        <img src={logo} alt="Site logo-icon" />
+        <img src={logo} alt="WTWR logo" />
       </div>
       <div className="header__info">
         <p className="header__info-text">{currentDate},</p>
@@ -26,7 +25,7 @@ function Header({ onAddClothesClick, weatherData}) {
       </div>
       <div className="header__avatar">
         <p className="header__avatar-user_text">{user}</p>
-        <img src={avatar} alt="Avatar-icon" />
+        <img src={avatar} alt={`${user}'s avatar`} />
       </div>
     </header>
   );

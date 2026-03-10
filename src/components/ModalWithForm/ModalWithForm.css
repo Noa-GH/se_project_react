@@ -40,9 +40,10 @@
   right: 16px;
   width: 24px;
   height: 24px;
-  background: url("../../assets/icons/close/Close-button.svg") center / contain
+  background: url("../../assets/icons/Close-button.svg") center / contain
     no-repeat;
   border: none;
+  background-color: transparent;
   cursor: pointer;
   padding: 0;
 }
