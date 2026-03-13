@@ -1,12 +1,95 @@
 import "./ModalWithForm.css";
-import closeButton from "../../assets/icons/Close-button.svg";
+import { useState, useRef, useEffect } from "react";
+import closeButton from "../../assets/icons/Close-button_dark.svg";
+import { fieldSchemas } from "../../utils/validation/validationSchema";
+import {
+  validateInput,
+  showValidationError,
+  clearValidationError,
+} from "../../utils/validation/validationUtils";
 
-function ModalWithForm({ title, name, buttonText, isOpen, onClose, children }) {
+function ModalWithForm({
+  title,
+  name,
+  buttonText,
+  isOpen,
+  onClose,
+  onSubmit,
+  children,
+}) {
+  const [isFormValid, setIsFormValid] = useState(false);
+  const formRef = useRef(null);
+
+  // Validate form on mount and when inputs change
+  useEffect(() => {
+    if (!formRef.current) return;
+
+    const validateForm = () => {
+      const inputs = formRef.current.querySelectorAll(
+        ".modal__input, .modal__radio-button",
+      );
+      let isValid = true;
+
+      inputs.forEach((input) => {
+        const validation = validateInput(input);
+
+        if (!validation.isValid) {
+          isValid = false;
+          showValidationError(input, validation.errorMessage);
+        } else {
+          clearValidationError(input);
+        }
+      });
+
+      setIsFormValid(isValid);
+    };
+
+    // Initial validation
+    validateForm();
+
+    // Add listeners to all inputs
+    const inputs = formRef.current.querySelectorAll(
+      ".modal__input, .modal__radio-button",
+    );
+    inputs.forEach((input) => {
+      input.addEventListener("input", validateForm);
+      input.addEventListener("change", validateForm);
+      input.addEventListener("blur", validateForm);
+    });
+
+    return () => {
+      inputs.forEach((input) => {
+        input.removeEventListener("input", validateForm);
+        input.removeEventListener("change", validateForm);
+        input.removeEventListener("blur", validateForm);
+      });
+    };
+  }, [isOpen]);
+
   // Close when the overlay (modal backdrop) is clicked, but not the inner content
   function handleOverlayClick(e) {
     if (e.target === e.currentTarget) {
       onClose();
     }
+  }
+
+  // Handle form submission
+  function handleSubmit(e) {
+    e.preventDefault();
+    if (!isFormValid) return;
+
+    // Collect form data
+    const formData = new FormData(formRef.current);
+    const data = Object.fromEntries(formData);
+
+    // Call parent's submit handler if provided
+    if (onSubmit) {
+      onSubmit(data);
+    }
+
+    // Reset form
+    formRef.current.reset();
+    setIsFormValid(false);
   }
 
   return (
@@ -19,68 +102,97 @@ function ModalWithForm({ title, name, buttonText, isOpen, onClose, children }) {
         <button className="modal__close-btn" type="button" onClick={onClose}>
           <img src={closeButton} alt="Close modal" />
         </button>
-        <form className="modal__form" name={name}>
+        <form
+          className="modal__form"
+          name={name}
+          ref={formRef}
+          onSubmit={handleSubmit}
+        >
           {children}
 
-          <div className="modal__name-input">Name</div>
-          <input
-            className="modal__input"
-            type="text"
-            name="name"
-            placeholder="Name"
-          />
+          {/* Name Input Field */}
+          <div className="modal__field">
+            <label className="modal__label" htmlFor="name">
+              {fieldSchemas.name.label}
+            </label>
+            <input
+              id="name"
+              className="modal__input"
+              type={fieldSchemas.name.type}
+              name={fieldSchemas.name.name}
+              placeholder={fieldSchemas.name.placeholder}
+              required={fieldSchemas.name.required}
+              minLength={fieldSchemas.name.minLength}
+              maxLength={fieldSchemas.name.maxLength}
+            />
+            <span
+              id="name-error"
+              className="modal__error"
+              role="alert"
+              aria-live="polite"
+            ></span>
+          </div>
 
-          <div className="modal__link-input">Link</div>
-          <input
-            className="modal__input"
-            type="text"
-            name="link"
-            placeholder="Image URL"
-          />
+          {/* Link Input Field */}
+          <div className="modal__field">
+            <label className="modal__label" htmlFor="link">
+              {fieldSchemas.link.label}
+            </label>
+            <input
+              id="link"
+              className="modal__input"
+              type={fieldSchemas.link.type}
+              name={fieldSchemas.link.name}
+              placeholder={fieldSchemas.link.placeholder}
+              required={fieldSchemas.link.required}
+            />
+            <span
+              id="link-error"
+              className="modal__error"
+              role="alert"
+              aria-live="polite"
+            ></span>
+          </div>
 
+          {/* Weather Type Radio Buttons */}
           <fieldset className="modal__radio-buttons">
             <legend className="modal__radio-buttons-legend">
-              Select the weather type:
+              {fieldSchemas.weatherType.label}
             </legend>
-            <div className="modal__radio-button-container">
-              <input
-                className="modal__radio-button"
-                type="radio"
-                id="hot-radio"
-                name="weather-type"
-                value="hot"
-              />
-              <label className="modal__radio-button-label" htmlFor="hot-radio">
-                Hot
-              </label>
-            </div>
-            <div className="modal__radio-button-container">
-              <input
-                className="modal__radio-button"
-                type="radio"
-                id="warm-radio"
-                name="weather-type"
-                value="warm"
-              />
-              <label className="modal__radio-button-label" htmlFor="warm-radio">
-                Warm
-              </label>
-            </div>
-            <div className="modal__radio-button-container">
-              <input
-                className="modal__radio-button"
-                type="radio"
-                id="cold-radio"
-                name="weather-type"
-                value="cold"
-              />
-              <label className="modal__radio-button-label" htmlFor="cold-radio">
-                Cold
-              </label>
-            </div>
+            {fieldSchemas.weatherType.options.map((option) => (
+              <div key={option.value} className="modal__radio-button-container">
+                <input
+                  id={`${option.value}-radio`}
+                  className="modal__radio-button"
+                  type="radio"
+                  name={fieldSchemas.weatherType.name}
+                  value={option.value}
+                  required={fieldSchemas.weatherType.required}
+                />
+                <label
+                  className="modal__radio-button-label"
+                  htmlFor={`${option.value}-radio`}
+                >
+                  {option.label}
+                </label>
+              </div>
+            ))}
+            <span
+              id="weather-type-error"
+              className="modal__error"
+              role="alert"
+              aria-live="polite"
+            ></span>
           </fieldset>
 
-          <button className="modal__submit-btn" type="submit">
+          {/* Submit Button - Disabled when form is invalid */}
+          <button
+            className={`modal__submit-btn modal__submit-button ${
+              !isFormValid ? "modal__submit-button_disabled" : ""
+            }`}
+            type="submit"
+            disabled={!isFormValid}
+          >
             {buttonText}
           </button>
         </form>
@@ -90,43 +202,3 @@ function ModalWithForm({ title, name, buttonText, isOpen, onClose, children }) {
 }
 
 export default ModalWithForm;
-
-/*
-return (
-  <div>
-    <form className="modal__form" name={name}>
-      {children}
-      <h2 className="modal__title">{title}</h2>
-      <button className="modal__close-btn" type="button" onClick={onClose} />
-      <div className="modal__label">Name</div>
-      <input id="name-input" type="text" name="name" placeholder="Name" />
-      <div className="modal__label">Link</div>
-      <input id="link-input" type="text" name="link" placeholder="Image URL" />
-      <div className="modal__label">Select the weather type:</div>
-      <div className="modal__type-button-container">
-        <ul className="modal__type-button-list">
-          <li className="modal__type-button-item">
-            <button className="modal__type-button" type="button">
-              Hot
-            </button>
-          </li>
-          <li className="modal__type-button-item">
-            <button className="modal__type-button" type="button">
-              Warm
-            </button>
-          </li>
-          <li className="modal__type-button-item">
-            <button className="modal__type-button" type="button">
-              Cold
-            </button>
-          </li>
-        </ul>
-      </div>
-      <button className="modal__submit-btn" type="submit">
-        {buttonText}
-      </button>
-    </form>
-  </div>
-);
-
-*/

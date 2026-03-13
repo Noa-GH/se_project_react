@@ -29,6 +29,25 @@ function App() {
     setSelectedCard(card);
   }
 
+  function handleAddGarment(formData) {
+    // Create a new item with unique ID
+    const newItem = {
+      _id:
+        clothingItems.length > 0
+          ? Math.max(...clothingItems.map((item) => item._id)) + 1
+          : 1,
+      name: formData.name,
+      link: formData.link,
+      weather: formData["weather-type"],
+    };
+
+    // Add new item to clothing items array
+    setClothingItems([...clothingItems, newItem]);
+
+    // Close the modal
+    handleCloseModal();
+  }
+
   // Close on Escape key
   useEffect(() => {
     if (!activeModal) return;
@@ -81,6 +100,7 @@ function App() {
           buttonText="Add garment"
           isOpen={activeModal === "add-garment"}
           onClose={handleCloseModal}
+          onSubmit={handleAddGarment}
         >
           {/* Form inputs will go here as children */}
         </ModalWithForm>

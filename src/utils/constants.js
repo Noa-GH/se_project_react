@@ -100,14 +100,10 @@ const defaultClothingItems = [
 
 export { defaultClothingItems };
 
+// The utils files also contain API coordinates and key for fetching weather data
 export const coordinates = {
   latitude: 38.777,
   longitude: -77.663,
 };
 
 export const APIkey = "ae6330cd4fbc32f1172753d6a6a5f7ec";
-
-// const weatherApiUrl =
-//   "https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&units=imperial&appid=${APIkey}";
-
-// export { weatherApiUrl };
