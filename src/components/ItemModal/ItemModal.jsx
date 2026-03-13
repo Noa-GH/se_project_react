@@ -1,6 +1,5 @@
 import "./ItemModal.css";
 import closeButtonDark from "../../assets/icons/Close-button_dark.svg";
-import closeButtonLight from "../../assets/icons/Close-button_light.svg";
 
 function ItemModal({ isOpen, onClose, selectedCard }) {
   function handleOverlayClick(e) {
@@ -9,9 +8,8 @@ function ItemModal({ isOpen, onClose, selectedCard }) {
     }
   }
 
-  const weatherType = selectedCard?.weather?.toLowerCase();
-  const closeButtonIcon =
-    weatherType === "hot" ? closeButtonDark : closeButtonLight;
+  // Prefer the dark close icon for better visibility over item images.
+  const closeButtonIcon = closeButtonDark;
 
   return (
     <div
