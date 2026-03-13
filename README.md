@@ -49,7 +49,7 @@ Users can view individual clothing cards in a preview modal, and add new garment
 | Linting | ESLint with React + React Hooks plugins |
 | Font | Cabinet Grotesk (self-hosted WOFF) |
 | Deployment | GitHub Pages |
-
+| Assisted Tools | Claude, Gemini, ChatGPT, Co-Pilot, Agentic Managers | 
 ---
 
 ## Getting Started
@@ -124,9 +124,9 @@ Early development involved a hybrid approach to weather fetching — part hardco
 
 ## Roadmap
 
-- [ ] Fix weather card image responsiveness
-- [ ] Implement form input validation (name + URL fields)
-- [ ] Enable/disable submit button based on form validity
+- [x] Fix weather card image responsiveness
+- [x] Implement form input validation (name + URL fields)
+- [x] Enable/disable submit button based on form validity
 - [ ] Add ability to delete clothing items
 - [ ] Connect to a backend server for persistent item storage
 - [ ] Add Celsius/Fahrenheit temperature toggle
