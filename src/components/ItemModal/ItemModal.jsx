@@ -1,4 +1,6 @@
 import "./ItemModal.css";
+import closeButtonDark from "../../assets/icons/Close-button_dark.svg";
+import closeButtonLight from "../../assets/icons/Close-button_light.svg";
 
 function ItemModal({ isOpen, onClose, selectedCard }) {
   function handleOverlayClick(e) {
@@ -6,6 +8,10 @@ function ItemModal({ isOpen, onClose, selectedCard }) {
       onClose();
     }
   }
+
+  const weatherType = selectedCard?.weather?.toLowerCase();
+  const closeButtonIcon =
+    weatherType === "hot" ? closeButtonDark : closeButtonLight;
 
   return (
     <div
@@ -17,7 +23,10 @@ function ItemModal({ isOpen, onClose, selectedCard }) {
           className="modal__close-btn modal__close-btn_type_image"
           type="button"
           onClick={onClose}
-        />
+          aria-label="Close modal"
+        >
+          <img src={closeButtonIcon} alt="Close modal" />
+        </button>
         <img
           src={selectedCard.link}
           alt={selectedCard.name}

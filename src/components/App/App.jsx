@@ -4,10 +4,13 @@ import Main from "../Main/Main";
 import Footer from "../Footer/Footer";
 import ModalWithForm from "../ModalWithForm/ModalWithForm";
 import ItemModal from "../ItemModal/ItemModal";
-import { getWeatherData } from "../../utils/weatherApi";
-import { coordinates, APIkey } from "../../utils/constants";
+import { getWeatherData } from "../../utils/api";
+import {
+  coordinates,
+  APIkey,
+  defaultClothingItems,
+} from "../../utils/constants";
 import { useState, useEffect } from "react";
-import { defaultClothingItems } from "../../utils/constants";
 
 function App() {
   // Default state matches the structure used in Main.jsx
