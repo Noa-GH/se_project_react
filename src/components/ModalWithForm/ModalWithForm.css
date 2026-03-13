@@ -40,9 +40,10 @@
   right: 16px;
   width: 24px;
   height: 24px;
-  background: url("../../assets/icons/close/close.svg") center / contain
+  background: url("../../assets/icons/Close-button.svg") center / contain
     no-repeat;
   border: none;
+  background-color: transparent;
   cursor: pointer;
   padding: 0;
 }
@@ -53,8 +54,117 @@
   gap: 16px;
 }
 
+/* ============================================
+   FIELD WRAPPER STYLES
+   ============================================ */
+.modal__field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.modal__label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #000;
+  margin: 0;
+}
+
+.modal__input {
+  border: none;
+  outline: none;
+  border-bottom: 1px solid #000000;
+  margin: 0;
+  padding: 0;
+  line-height: 20px;
+  letter-spacing: 0%;
+  font-family: inherit;
+  transition:
+    border-color 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.modal__input:focus {
+  border-bottom-color: #007bff;
+}
+
+/* ============================================
+   ERROR STATE STYLES
+   ============================================ */
+.modal__input_type_error {
+  border-bottom-color: #dc3545;
+  background-color: rgba(220, 53, 69, 0.05);
+}
+
+.modal__error {
+  display: none;
+  font-size: 12px;
+  color: #dc3545;
+  margin-top: 2px;
+  line-height: 16px;
+}
+
+.modal__error_visible {
+  display: block;
+}
+
+/* ============================================
+   RADIO BUTTON STYLES
+   ============================================ */
+input[type="radio"].modal__radio-button {
+  margin: 0;
+  cursor: pointer;
+  accent-color: #000;
+}
+
+input[type="radio"].modal__radio-button:checked + .modal__radio-button-label {
+  color: #000;
+  font-weight: 500;
+}
+
+input[type="radio"].modal__radio-button:not(:checked)
+  + .modal__radio-button-label {
+  color: #99999c;
+}
+
+.modal__radio-buttons {
+  display: flex;
+  flex-direction: column;
+  border: none;
+  align-content: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 0;
+  margin: 0;
+}
+
+.modal__radio-button-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0;
+  margin: 0;
+}
+
+.modal__radio-buttons-legend {
+  margin-bottom: 12px;
+  padding: 0;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.modal__radio-button-label {
+  letter-spacing: 0;
+  line-height: 20px;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+/* ============================================
+   SUBMIT BUTTON STYLES
+   ============================================ */
 .modal__submit-btn {
-  align-self: flex-end;
+  align-self: flex-start;
   padding: 10px 20px;
   background-color: #000;
   color: #fff;
@@ -63,9 +173,33 @@
   font-size: 16px;
   font-weight: 500;
   cursor: pointer;
-  transition: opacity 0.2s;
+  transition:
+    opacity 0.2s ease,
+    background-color 0.2s ease;
 }
 
-.modal__submit-btn:hover {
+.modal__submit-btn:hover:not(:disabled) {
   opacity: 0.8;
+}
+
+.modal__submit-btn:disabled,
+.modal__submit-button_disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Add garment button variant */
+.modal__submit-btn_add {
+  background-color: #007bff;
+}
+
+.modal__submit-btn_add:hover:not(:disabled) {
+  background-color: #0056b3;
+}
+
+.modal__submit-btn_add:disabled,
+.modal__submit-button_disabled.modal__submit-btn_add {
+  background-color: #007bff;
+  opacity: 0.5;
+  cursor: not-allowed;
 }

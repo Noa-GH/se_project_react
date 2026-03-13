@@ -23,7 +23,7 @@ function WeatherCard({ weatherData }) {
       <p className="weather-card__temp-text">{weatherData.temp.F}° F</p>
       <img
         src={weatherImage}
-        alt={weatherData.type || "weather icon"}
+        alt="${weatherData.type ?? 'sunny'} weather"
         className="weather-card__image"
       />
     </section>
