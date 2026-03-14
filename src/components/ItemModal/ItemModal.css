@@ -8,3 +8,22 @@
   height: 100%;
   display: block;
 }
+
+.modal__content_type_image {
+  padding: 0;
+  overflow: hidden;
+}
+
+.modal__caption,
+.modal__weather {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.modal__caption {
+  margin-bottom: 12px;
+}
+
+.modal__footer {
+  padding: 0 0 32px 32px;
+}

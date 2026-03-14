@@ -1,5 +1,5 @@
 import "./ItemModal.css";
-import closeButtonDark from "../../assets/icons/Close-button_dark.svg";
+import closeButtonLight from "../../assets/icons/Close-button_light.svg";
 
 function ItemModal({ isOpen, onClose, selectedCard }) {
   function handleOverlayClick(e) {
@@ -9,7 +9,7 @@ function ItemModal({ isOpen, onClose, selectedCard }) {
   }
 
   // Prefer the dark close icon for better visibility over item images.
-  const closeButtonIcon = closeButtonDark;
+  const closeButtonIcon = closeButtonLight;
 
   return (
     <div
