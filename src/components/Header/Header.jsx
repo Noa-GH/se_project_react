@@ -1,4 +1,5 @@
 import "./Header.css";
+import ToggleSwitch from "../ToggleSwitch/ToggleSwitch";
 import logo from "../../assets/icons/logo/Logo.svg";
 import avatar from "../../assets/icons/avatar-icons/AviPlaceholderTrue.svg";
 const currentDate = new Date().toLocaleDateString("default", {
@@ -8,7 +9,7 @@ const currentDate = new Date().toLocaleDateString("default", {
 
 const user = "Noah";
 
-function Header({ onAddClothesClick, weatherData }) {
+function Header({ onAddClothesClick, weatherData, toggleSwitch, onToggleSwitch }) {
   return (
     <header className="header">
       <div className="header__logo">
@@ -19,6 +20,7 @@ function Header({ onAddClothesClick, weatherData }) {
         <p className="header__info-text">{weatherData.city}</p>
       </div>
       <div className="header__nav">
+        <ToggleSwitch isOn={toggleSwitch} onToggle={onToggleSwitch} />
         <button className="header__nav-button" onClick={onAddClothesClick}>
           + Add Clothes
         </button>

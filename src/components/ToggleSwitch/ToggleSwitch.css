@@ -1,0 +1,48 @@
+.toggle-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.toggle-label {
+  font-size: 14px;
+  color: #333;
+  user-select: none;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+  position: absolute;
+}
+
+.slider-image {
+  display: block;
+  cursor: pointer;
+}
+
+.switch-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  transition: opacity 0.2s ease;
+}
+
+/* Optional: Add a subtle transition effect */
+.slider-image:active .switch-image {
+  opacity: 0.9;
+}
+
+/* Disabled state */
+.switch input:disabled ~ .slider-image {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}

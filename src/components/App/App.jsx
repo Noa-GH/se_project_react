@@ -4,6 +4,7 @@ import Main from "../Main/Main";
 import Footer from "../Footer/Footer";
 import ModalWithForm from "../ModalWithForm/ModalWithForm";
 import ItemModal from "../ItemModal/ItemModal";
+import ToggleSwitch from "../ToggleSwitch/ToggleSwitch";
 import { getWeatherData } from "../../utils/api";
 import {
   coordinates,
@@ -18,20 +19,33 @@ function App() {
   const [activeModal, setActiveModal] = useState("");
   const [selectedCard, setSelectedCard] = useState({});
   const [clothingItems, setClothingItems] = useState(defaultClothingItems);
-
+  const [toggleSwitch, setToggleSwitch] = useState(false);
+  // Handle Functions
+  // TODO: implement toggle switch
+  function handleToggleSwitch() {
+    setToggleSwitch(!toggleSwitch);
+  }
+  // handle open add clothes modal
+  // ==================================
   function handleOpenAddClothesModal() {
     setActiveModal("add-garment");
   }
-
+  // ==================================
+  // handle close modal
+  // ==================================
   function handleCloseModal() {
     setActiveModal("");
   }
-
+  // ==================================
+  // handle card click
+  // ==================================
   function handleCardClick(card) {
     setActiveModal("preview");
     setSelectedCard(card);
   }
-
+  // ==================================
+  // handle add garment
+  // ================================== 
   function handleAddGarment(formData) {
     // Create a new item with unique ID
     const newItem = {
@@ -50,8 +64,9 @@ function App() {
     // Close the modal
     handleCloseModal();
   }
-
+  // ==================================
   // Close on Escape key
+  // ==================================
   useEffect(() => {
     if (!activeModal) return;
 
@@ -66,6 +81,7 @@ function App() {
   }, [activeModal]);
 
   // Fetch weather data on component mount
+  // ==================================
   useEffect(() => {
     getWeatherData(coordinates, APIkey)
       .then((data) => {
@@ -81,7 +97,10 @@ function App() {
         // Keep fallback data if fetch fails
       });
   }, []);
+  // ==================================
 
+  // return JSX
+  // ================================== 
   return (
     <>
       <div className="page">
@@ -89,6 +108,8 @@ function App() {
           <Header
             onAddClothesClick={handleOpenAddClothesModal}
             weatherData={weatherData}
+            toggleSwitch={toggleSwitch}
+            onToggleSwitch={handleToggleSwitch}
           />
           <Main
             weatherData={weatherData}
