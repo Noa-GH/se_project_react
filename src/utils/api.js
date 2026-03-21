@@ -24,7 +24,7 @@ const baseUrl = "http://localhost:3001";
 
 function checkResponse(response) {
   if (!response.ok) {
-    throw new Error(`Request failed (status ${response.status})`);
+    throw new Error(`Failed to fetch items (status ${response.status}) ${response.statusText}`);
   }
   return response.json();
 }
@@ -47,5 +47,14 @@ export function addItem({ name, imageUrl, weather }) {
 export function deleteItem(id) {
   return fetch(`${baseUrl}/items/${id}`, {
     method: "DELETE",
+  }).then(checkResponse);
+}
+
+// PATCH /items/:id
+export function updateItem(id, { name, imageUrl, weather }) {
+  return fetch(`${baseUrl}/items/${id}`, {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ name, imageUrl, weather }),
   }).then(checkResponse);
 }

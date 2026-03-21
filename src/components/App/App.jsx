@@ -4,11 +4,12 @@ import Header from "../Header/Header";
 import Profile from "../Profile/Profile";
 import Main from "../Main/Main";
 import Footer from "../Footer/Footer";
+import AddItemModal from "../AddItemModal/AddItemModal";
 import ModalWithForm from "../ModalWithForm/ModalWithForm";
 import ItemModal from "../ItemModal/ItemModal";
 import ToggleSwitch from "../ToggleSwitch/ToggleSwitch";
 import { Routes, Route } from "react-router-dom";
-import { getWeatherData, getItems, addItem, deleteItem } from "../../utils/api";
+import { getWeatherData, getItems, addItem, deleteItem, updateItem } from "../../utils/api";
 import {
   coordinates,
   APIkey,
@@ -76,7 +77,7 @@ function App() {
     deleteItem(id)
       .then(() => {
         setClothingItems(clothingItems.filter((item) => item._id !== id));
-      })
+      }).then(() => handleCloseModal("Deleting garment..."))
       .catch((error) => console.error("Failed to delete item:", error));
   }
   // ==================================
@@ -144,10 +145,10 @@ function App() {
                   onCardClick={handleCardClick}
                   clothingItems={clothingItems}
                 />} />
-              <Route 
-                path="/profile" 
+              <Route
+                path="/profile"
                 element={
-                  <Profile 
+                  <Profile
                     clothingItems={clothingItems}
                     onCardClick={handleCardClick}
                     handleAddClick={handleOpenAddClothesModal}
@@ -159,20 +160,17 @@ function App() {
             </Routes>
             <Footer />
           </div>
-          <ModalWithForm
-            title="New Garment"
-            name="add-garment"
-            buttonText="Add garment"
+          <AddItemModal
             isOpen={activeModal === "add-garment"}
             onClose={handleCloseModal}
-            onSubmit={handleAddGarment}
-          >
-            {/* Form inputs will go here as children */}
-          </ModalWithForm>
+            onAddItem={handleAddGarment}
+          />
           <ItemModal
             isOpen={activeModal === "preview"}
             onClose={handleCloseModal}
             selectedCard={selectedCard}
+          // handleDeleteItem={handleDeleteItem}
+          // isOwner={selectedCard.owner === currentUser._id}
           />
         </CurrentTemperatureUnitContext.Provider>
       </div>

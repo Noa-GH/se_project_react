@@ -1,6 +1,5 @@
 import "./ClothesSection.css";
 import ItemCard from "../../ItemCard/ItemCard";
-
 interface ClothingItem {
   _id: number;
   name: string;

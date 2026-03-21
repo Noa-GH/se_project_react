@@ -1,58 +1,34 @@
-import { useState, useContext } from "react";
-import "./ToggleSwitch.css";
-import CurrentTemperatureUnitContext from "../../context/CurrentTemperatureUnitContext";
+import React, { useContext } from 'react';
+import CurrentTemperatureUnitContext from '../../context/CurrentTemperatureUnitContext';
+import './ToggleSwitch.css';
 
-import DegC from "./DegreeToggleBtn/DegC.svg";
-import DegF from "./DegreeToggleBtn/DegF.svg";
-import DegHover from "./DegreeToggleBtn/DegHover.svg";
-import DegMove from "./DegreeToggleBtn/DegMove.svg";
+const TemperatureToggle: React.FC = () => {
+  // Get unit and setUnit from context instead of local state
+  const { currentTemperatureUnit, handleToggleSwitchChange } = useContext(CurrentTemperatureUnitContext);
 
-interface ToggleSwitchProps {
-  label?: string;
-  disabled?: boolean;
-}
-
-function ToggleSwitch({ label, disabled = false }: ToggleSwitchProps) {
-  const { currentTemperatureUnit, handleToggleSwitchChange } = useContext(
-    CurrentTemperatureUnitContext
-  );
-  // isOn is true when the unit is Celsius (switch toggled on)
-  const isOn = currentTemperatureUnit === "C";
-  const [isHovered, setIsHovered] = useState(false);
-
-  // Select the correct image based on state and hover
-  const getCurrentImage = () => {
-    if (isOn) {
-      return isHovered ? DegHover : DegC;
-    } else {
-      return isHovered ? DegMove : DegF;
-    }
+  // Handle the toggle click
+  const handleToggle = () => {
+    const newUnit = currentTemperatureUnit === 'F' ? 'C' : 'F';
+    handleToggleSwitchChange(newUnit);
+    // Context automatically updates all components using useTemperature()
   };
 
   return (
-    <div className="toggle-container">
-      {label && <span className="toggle-label">{label}</span>}
-      <label className="switch">
-        <input
-          type="checkbox"
-          checked={isOn}
-          onChange={handleToggleSwitchChange}
-          disabled={disabled}
-        />
-        <span
-          className="slider-image"
-          onMouseEnter={() => setIsHovered(true)}
-          onMouseLeave={() => setIsHovered(false)}
-        >
-          <img
-            src={getCurrentImage()}
-            alt={isOn ? "Switch is on (C)" : "Switch is off (F)"}
-            className="switch-image"
-          />
-        </span>
-      </label>
+    <div className="temperature-toggle-container">
+      <button
+        className={`temperature-toggle ${currentTemperatureUnit === 'F' ? 'is-fahrenheit' : 'is-celsius'}`}
+        onClick={handleToggle}
+        aria-label={`Toggle temperature unit. Currently set to ${currentTemperatureUnit}`}
+      >
+        {/* The animated circle that moves left/right */}
+        <div className="toggle-circle" />
+
+        {/* Labels for each unit */}
+        <span className="unit-label unit-f">F</span>
+        <span className="unit-label unit-c">C</span>
+      </button>
     </div>
   );
-}
+};
 
-export default ToggleSwitch;
+export default TemperatureToggle;

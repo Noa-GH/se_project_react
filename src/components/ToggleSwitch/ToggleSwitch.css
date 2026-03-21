@@ -1,48 +1,88 @@
-.toggle-container {
+.temperature-toggle-container {
   display: flex;
   align-items: center;
-  gap: 12px;
+  justify-content: center;
+  padding: 0;
 }
 
-.toggle-label {
-  font-size: 14px;
+.temperature-toggle {
+  /* Reset button styles */
+  border: none;
+  background: none;
+  cursor: pointer;
+  padding: 0;
+  
+  /* Layout and sizing - much smaller for header use */
+  position: relative;
+  width: 56px;
+  height: 28px;
+  
+  /* Pill-shaped background */
+  background-color: #ffffff;
+  border-radius: 50px;
+  border: 2px solid #888;
+  
+  /* Flex for text alignment */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0;
+  
+  /* Transition for border color on hover */
+  transition: border-color 0.2s ease;
+}
+
+/* Hover effect: darker border */
+.temperature-toggle:hover {
+  border-color: #555;
+}
+
+/* Text labels styling */
+.unit-label {
+  font-size: 12px;
+  font-weight: 700;
   color: #333;
+  position: relative;
+  z-index: 1;
   user-select: none;
 }
 
-.switch {
-  position: relative;
-  display: inline-block;
-  cursor: pointer;
+.unit-f,
+.unit-c {
+  flex: 1;
+  text-align: center;
+  color: #000;
 }
 
-.switch input {
-  opacity: 0;
-  width: 0;
-  height: 0;
+/* Active unit turns white when the circle covers it */
+.is-fahrenheit .unit-f,
+.is-celsius .unit-c {
+  color: #fff;
+  transition: color 0.3s ease;
+}
+
+/* The animated circle */
+.toggle-circle {
   position: absolute;
+  width: 30px;
+  height: 28px;
+  background-color: #000;
+  border-radius: 50%;
+  
+  /* 2. Animate the transform property */
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  
+  /* 3. Initial state (Fahrenheit) */
+  transform: translateX(-2px);
 }
 
-.slider-image {
-  display: block;
-  cursor: pointer;
+/* When C is selected, move circle to the right */
+.temperature-toggle.is-celsius .toggle-circle {
+  transform: translateX(24px);
 }
 
-.switch-image {
-  display: block;
-  width: 100%;
-  height: auto;
-  transition: opacity 0.2s ease;
-}
-
-/* Optional: Add a subtle transition effect */
-.slider-image:active .switch-image {
-  opacity: 0.9;
-}
-
-/* Disabled state */
-.switch input:disabled ~ .slider-image {
-  opacity: 0.5;
-  cursor: not-allowed;
-  pointer-events: none;
+/* Focus state for accessibility */
+.temperature-toggle:focus {
+  outline: 2px solid #4CAF50;
+  outline-offset: 2px;
 }
