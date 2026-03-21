@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import "./ToggleSwitch.css";
+import CurrentTemperatureUnitContext from "../../context/CurrentTemperatureUnitContext";
 
 import DegC from "./DegreeToggleBtn/DegC.svg";
 import DegF from "./DegreeToggleBtn/DegF.svg";
@@ -7,18 +8,16 @@ import DegHover from "./DegreeToggleBtn/DegHover.svg";
 import DegMove from "./DegreeToggleBtn/DegMove.svg";
 
 interface ToggleSwitchProps {
-  isOn: boolean;
-  onToggle: () => void;
   label?: string;
   disabled?: boolean;
 }
 
-function ToggleSwitch({
-  isOn,
-  onToggle,
-  label,
-  disabled = false
-}: ToggleSwitchProps) {
+function ToggleSwitch({ label, disabled = false }: ToggleSwitchProps) {
+  const { currentTemperatureUnit, handleToggleSwitchChange } = useContext(
+    CurrentTemperatureUnitContext
+  );
+  // isOn is true when the unit is Celsius (switch toggled on)
+  const isOn = currentTemperatureUnit === "C";
   const [isHovered, setIsHovered] = useState(false);
 
   // Select the correct image based on state and hover
@@ -37,7 +36,7 @@ function ToggleSwitch({
         <input
           type="checkbox"
           checked={isOn}
-          onChange={onToggle}
+          onChange={handleToggleSwitchChange}
           disabled={disabled}
         />
         <span

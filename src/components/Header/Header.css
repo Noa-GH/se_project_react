@@ -57,28 +57,28 @@
   opacity: 0.7;
 }
 
-.header__avatar {
+.header__profile {
   display: flex;
   align-items: center;
   gap: 12px;
   margin-left: 16px;
 }
 
-.header__avatar-user_text {
+.header__profile-username {
   font-size: 20px;
   color: #000;
   margin: 0;
   padding: 0;
 }
 
-.header__avatar-img {
+.header__profile-img {
   width: 40px;
   height: 40px;
   border-radius: 50%;
   object-fit: cover;
 }
 
-.header__avatar img {
+.header__profile img {
   width: 40px;
   height: 40px;
   border-radius: 50%;

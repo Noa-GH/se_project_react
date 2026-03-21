@@ -7,7 +7,7 @@ export const fieldSchemas = {
     id: "name",
     name: "name",
     type: "text",
-    placeholder: "Name",
+    placeholder: "Name of Garment",
     required: true,
     minLength: 1,
     maxLength: 100,
