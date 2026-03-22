@@ -9,6 +9,7 @@ import { fieldSchemas, customValidators } from "./validationSchema";
  * @param {HTMLElement} input - The input element to validate
  * @returns {object} Validation result { isValid, errorMessage }
  */
+
 export const validateInput = (input) => {
   if (!input) {
     return { isValid: false, errorMessage: "Input element not found" };
@@ -22,22 +23,18 @@ export const validateInput = (input) => {
     if (input.validity.valueMissing) {
       return {
         isValid: false,
-        errorMessage:
-          schema?.errorMessages?.required || schema?.label + " is required",
+        errorMessage: schema?.errorMessages?.required || `${schema?.label || 'This field'} is required`,  // ✅ STRING
       };
     }
     if (input.validity.typeMismatch) {
       return {
         isValid: false,
-        errorMessage: schema?.errorMessages?.invalid || "Invalid input format",
+        errorMessage: schema?.errorMessages?.invalid || "Invalid input format",  // ✅ STRING
       };
     }
     return {
       isValid: false,
-      errorMessage:
-        input.validationMessage ||
-        schema?.errorMessages?.invalid ||
-        "Invalid input",
+      errorMessage: input.validationMessage || schema?.errorMessages?.invalid || "Invalid input",  // ✅ STRING
     };
   }
 
@@ -47,12 +44,12 @@ export const validateInput = (input) => {
     if (customValidator && !customValidator(input.value)) {
       return {
         isValid: false,
-        errorMessage: schema?.errorMessages?.invalid || "Invalid input format",
+        errorMessage: schema?.errorMessages?.invalid || "Invalid input format",  // ✅ STRING
       };
     }
   }
 
-  return { isValid: true, errorMessage: "" };
+  return { isValid: true, errorMessage: "" };  // ✅ STRING (empty)
 };
 
 /**

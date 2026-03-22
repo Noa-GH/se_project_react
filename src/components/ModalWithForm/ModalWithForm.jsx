@@ -22,7 +22,7 @@ function ModalWithForm({
 
   // Validate form on mount and when inputs change
   useEffect(() => {
-    if (!formRef.current) return;
+    if (!formRef.current || !isOpen) return;
 
     const validateForm = () => {
       const inputs = formRef.current.querySelectorAll(
@@ -92,6 +92,10 @@ function ModalWithForm({
     setIsFormValid(false);
   }
 
+  // Debug logging (commented out for production)
+  // console.log('fieldSchemas.imageUrl:', fieldSchemas.imageUrl);
+  // console.log('label:', fieldSchemas.imageUrl?.label);
+
   return (
     <div
       className={`modal modal_type_${name} ${isOpen ? "modal_is-opened" : ""}`}
@@ -133,21 +137,21 @@ function ModalWithForm({
             ></span>
           </div>
 
-          {/* Link Input Field */}
+          {/* Image URL Input Field */}
           <div className="modal__field">
-            <label className="modal__label" htmlFor="link">
-              {fieldSchemas.link.label}
+            <label className="modal__label" htmlFor="imageUrl">
+              {fieldSchemas.imageUrl.label}
             </label>
             <input
-              id="link"
+              id="imageUrl"
               className="modal__input"
-              type={fieldSchemas.link.type}
-              name={fieldSchemas.link.name}
-              placeholder={fieldSchemas.link.placeholder}
-              required={fieldSchemas.link.required}
+              type={fieldSchemas.imageUrl.type}
+              name={fieldSchemas.imageUrl.name}
+              placeholder={fieldSchemas.imageUrl.placeholder}
+              required={fieldSchemas.imageUrl.required}
             />
             <span
-              id="link-error"
+              id="imageUrl-error"
               className="modal__error"
               role="alert"
               aria-live="polite"
@@ -157,17 +161,17 @@ function ModalWithForm({
           {/* Weather Type Radio Buttons */}
           <fieldset className="modal__radio-buttons">
             <legend className="modal__radio-buttons-legend">
-              {fieldSchemas.weatherType.label}
+              {fieldSchemas.weather.label}
             </legend>
-            {fieldSchemas.weatherType.options.map((option) => (
+            {fieldSchemas.weather.options.map((option) => (
               <div key={option.value} className="modal__radio-button-container">
                 <input
                   id={`${option.value}-radio`}
                   className="modal__radio-button"
                   type="radio"
-                  name={fieldSchemas.weatherType.name}
+                  name={fieldSchemas.weather.name}
                   value={option.value}
-                  required={fieldSchemas.weatherType.required}
+                  required={fieldSchemas.weather.required}
                 />
                 <label
                   className="modal__radio-button-label"
@@ -178,7 +182,7 @@ function ModalWithForm({
               </div>
             ))}
             <span
-              id="weather-type-error"
+              id="weather-error"
               className="modal__error"
               role="alert"
               aria-live="polite"
@@ -187,9 +191,8 @@ function ModalWithForm({
 
           {/* Submit Button - Disabled when form is invalid */}
           <button
-            className={`modal__submit-btn modal__submit-button ${
-              !isFormValid ? "modal__submit-button_disabled" : ""
-            }`}
+            className={`modal__submit-btn modal__submit-button ${!isFormValid ? "modal__submit-button_disabled" : ""
+              }`}
             type="submit"
             disabled={!isFormValid}
           >

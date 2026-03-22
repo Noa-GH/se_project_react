@@ -31,7 +31,12 @@ function checkResponse(response) {
 
 // GET /items
 export function getItems() {
-  return fetch(`${baseUrl}/items`).then(checkResponse);
+  console.log("Fetching from:", `${baseUrl}/items`);
+  return fetch(`${baseUrl}/items`).then(checkResponse).catch(erro => {
+    console.error("Error fetching details:", erro);
+    throw error;
+
+  });
 }
 
 // POST /items

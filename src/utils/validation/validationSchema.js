@@ -1,7 +1,4 @@
-// validationSchema.js - Field validation schema definitions
-// This module defines validation rules for different fields
-// Humans can easily modify these rules without changing component logic
-
+// validationSchema.js
 export const fieldSchemas = {
   name: {
     id: "name",
@@ -17,21 +14,21 @@ export const fieldSchemas = {
       invalid: "Please enter a valid name",
     },
   },
-  link: {
-    id: "link",
-    name: "link",
+  imageUrl: {
+    id: "imageUrl",
+    name: "imageUrl",
     type: "url",
     placeholder: "Image URL",
     required: true,
-    label: "Link",
+    label: "Image URL",
     errorMessages: {
-      required: "Link is required",
+      required: "Image URL is required",
       invalid: "Please enter a valid URL",
     },
   },
-  weatherType: {
-    id: "weather-type",
-    name: "weather-type",
+  weather: {
+    id: "weather",
+    name: "weather",
     type: "radio",
     required: true,
     label: "Select the weather type",
@@ -46,11 +43,6 @@ export const fieldSchemas = {
   },
 };
 
-// ============================================
-// VALIDATION RULES
-// ============================================
-
-// Custom validators can be added here
 export const customValidators = {
   url: (value) => {
     try {
@@ -63,15 +55,6 @@ export const customValidators = {
   nonEmpty: (value) => value.trim().length > 0,
 };
 
-// ============================================
-// HELPER FUNCTIONS
-// ============================================
-
-/**
- * Get validation attributes for a field
- * @param {string} fieldName - Name of the field
- * @returns {object} Validation attributes for the field
- */
 export const getFieldValidationAttrs = (fieldName) => {
   const schema = fieldSchemas[fieldName];
   if (!schema) return {};
@@ -90,12 +73,6 @@ export const getFieldValidationAttrs = (fieldName) => {
   return attrs;
 };
 
-/**
- * Get error message for a field validation error
- * @param {string} fieldName - Name of the field
- * @param {string} errorType - Type of error (required, invalid, etc.)
- * @returns {string} Error message
- */
 export const getErrorMessage = (fieldName, errorType = "invalid") => {
   const schema = fieldSchemas[fieldName];
   if (!schema) return "Invalid input";

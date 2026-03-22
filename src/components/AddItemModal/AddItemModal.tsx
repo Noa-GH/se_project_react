@@ -9,7 +9,8 @@ function AddItemModal({ isOpen, onAddItem, onClose }: { isOpen: boolean, onAddIt
             buttonText="Add Garment"
             isOpen={isOpen}
             onClose={onClose}
-            onSubmit={onAddItem} children={undefined}>
+            onSubmit={onAddItem}
+        >
             {/* Form fields will be inserted here */}
         </ModalWithForm>
     );

@@ -1,6 +1,7 @@
+import { useState, useEffect } from "react";
 import { getItems, addItem } from "../utils/api";
 
-function ClothingModal() {
+function useClothingItems() {
     useEffect(() => {
         getItems()
             .then((data) => setClothingItems(data))

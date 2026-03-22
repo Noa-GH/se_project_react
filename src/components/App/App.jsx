@@ -5,84 +5,88 @@ import Profile from "../Profile/Profile";
 import Main from "../Main/Main";
 import Footer from "../Footer/Footer";
 import AddItemModal from "../AddItemModal/AddItemModal";
-import ModalWithForm from "../ModalWithForm/ModalWithForm";
 import ItemModal from "../ItemModal/ItemModal";
 import ToggleSwitch from "../ToggleSwitch/ToggleSwitch";
 import { Routes, Route } from "react-router-dom";
-import { getWeatherData, getItems, addItem, deleteItem, updateItem } from "../../utils/api";
-import {
-  coordinates,
-  APIkey,
-} from "../../utils/constants";
+import { getWeatherData } from "../../utils/api";
+import { coordinates, APIkey } from "../../utils/constants";
 import CurrentTemperatureUnitContext from "../../context/CurrentTemperatureUnitContext";
 import { useState, useEffect } from "react";
 
+// Your custom hook!
+import useClothingItems from "../../hooks/useClothingItems";
+
 function App() {
-  // Default state matches the structure used in Main.jsx
+  // Weather state
   const [weatherData, setWeatherData] = useState({
     temperature: { F: 75, C: 24 },
     city: "",
     condition: "",
     image: "",
   });
+
+  // Modal state
   const [activeModal, setActiveModal] = useState("");
   const [selectedCard, setSelectedCard] = useState({});
-  const [clothingItems, setClothingItems] = useState([]);
+
+  // Temperature unit
   const [currentTemperatureUnit, setCurrentTemperatureUnit] = useState("F");
+
+  // 🎉 USE YOUR CUSTOM HOOK HERE!
+  // This replaces all the clothing item logic that was in App.jsx
+  const {
+    clothingItems,
+    isLoading,
+    error,
+    handleAddItem,
+    handleDeleteItem,
+    clearError,
+  } = useClothingItems();
 
   const currentUser = {
     name: "Noah",
     avatar: avatarUrl,
   };
 
-  // Handle Functions
+  // Temperature toggle
   const handleToggleSwitchChange = () => {
     currentTemperatureUnit === "F"
       ? setCurrentTemperatureUnit("C")
       : setCurrentTemperatureUnit("F");
   };
-  // handle open add clothes modal
-  // ==================================
+
+  // Modal handlers
   function handleOpenAddClothesModal() {
     setActiveModal("add-garment");
   }
-  // ==================================
-  // handle close modal
-  // ==================================
+
   function handleCloseModal() {
     setActiveModal("");
   }
-  // ==================================
-  // handle card click
-  // ==================================
+
   function handleCardClick(card) {
     setActiveModal("preview");
     setSelectedCard(card);
   }
-  // ==================================
-  // handle add garment (POST)
-  // ==================================
-  function handleAddGarment({ name, imageUrl, weather }) {
-    addItem({ name, imageUrl, weather })
-      .then((newItem) => {
-        setClothingItems([newItem, ...clothingItems]);
-        handleCloseModal();
-      })
-      .catch((error) => console.error("Failed to add item:", error));
+
+  // Add garment - now uses your custom hook!
+  async function handleAddGarment(data) {
+    const result = await handleAddItem(data);
+    if (result.success) {
+      handleCloseModal();
+    }
+    // If error, the hook already set the error state
   }
-  // ==================================
-  // handle delete item (DELETE)
-  // ==================================
-  function handleDeleteItem(id) {
-    deleteItem(id)
-      .then(() => {
-        setClothingItems(clothingItems.filter((item) => item._id !== id));
-      }).then(() => handleCloseModal("Deleting garment..."))
-      .catch((error) => console.error("Failed to delete item:", error));
+
+  // Delete item - now uses your custom hook!
+  async function handleDeleteGarment(id) {
+    const result = await handleDeleteItem(id);
+    if (result.success) {
+      handleCloseModal();
+    }
   }
-  // ==================================
+
   // Close on Escape key
-  // ==================================
   useEffect(() => {
     if (!activeModal) return;
 
@@ -96,23 +100,14 @@ function App() {
     return () => document.removeEventListener("keydown", handleKeyDown);
   }, [activeModal]);
 
-  // Fetch clothing items on mount
-  // ==================================
-  useEffect(() => {
-    getItems()
-      .then((data) => setClothingItems(data))
-      .catch((error) => console.error("Failed to fetch items:", error));
-  }, []);
-
-  // Fetch weather data on component mount
-  // ==================================
+  // Fetch weather data on mount
   useEffect(() => {
     getWeatherData(coordinates, APIkey)
       .then((data) => {
         const weather = {};
         weather.temperature = {};
         weather.temperature.F = Math.round(data.main.temp);
-        weather.temperature.C = Math.round((data.main.temp - 32) * 5 / 9);
+        weather.temperature.C = Math.round(((data.main.temp - 32) * 5) / 9);
         weather.city = data.name;
         weather.condition = data.weather[0].description;
         weather.image = `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
@@ -120,61 +115,83 @@ function App() {
       })
       .catch((error) => {
         console.error("Failed to fetch weather data:", error);
-        // Keep fallback data if fetch fails
       });
   }, []);
-  // ==================================
 
-  // return JSX
-  // ================================== 
-  return (
-    <>
+  // Loading state - from your hook!
+  if (isLoading && clothingItems.length === 0) {
+    return (
       <div className="page">
-        <CurrentTemperatureUnitContext.Provider value={{ currentTemperatureUnit, handleToggleSwitchChange }}>
-          <div className="page__content">
+        <div className="page__loading">Loading clothing items...</div>
+      </div>
+    );
+  }
 
-            <Header
-              onAddClothesClick={handleOpenAddClothesModal}
-              weatherData={weatherData}
-              currentUser={currentUser}
-            />
-            <Routes>
-              <Route path="/"
-                element={<Main
+  // Error state - from your hook!
+  if (error && clothingItems.length === 0) {
+    return (
+      <div className="page">
+        <div className="page__error">
+          Error: {error}
+          <button onClick={clearError}>Try Again</button>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="page">
+      <CurrentTemperatureUnitContext.Provider
+        value={{ currentTemperatureUnit, handleToggleSwitchChange }}
+      >
+        <div className="page__content">
+          <Header
+            onAddClothesClick={handleOpenAddClothesModal}
+            weatherData={weatherData}
+            currentUser={currentUser}
+          />
+
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <Main
                   weatherData={weatherData}
                   onCardClick={handleCardClick}
                   clothingItems={clothingItems}
-                />} />
-              <Route
-                path="/profile"
-                element={
-                  <Profile
-                    clothingItems={clothingItems}
-                    onCardClick={handleCardClick}
-                    handleAddClick={handleOpenAddClothesModal}
-                    handleDeleteItem={handleDeleteItem}
-                    currentUser={currentUser}
-                  />
-                }
-              />
-            </Routes>
-            <Footer />
-          </div>
-          <AddItemModal
-            isOpen={activeModal === "add-garment"}
-            onClose={handleCloseModal}
-            onAddItem={handleAddGarment}
-          />
-          <ItemModal
-            isOpen={activeModal === "preview"}
-            onClose={handleCloseModal}
-            selectedCard={selectedCard}
-          // handleDeleteItem={handleDeleteItem}
-          // isOwner={selectedCard.owner === currentUser._id}
-          />
-        </CurrentTemperatureUnitContext.Provider>
-      </div>
-    </>
+                />
+              }
+            />
+            <Route
+              path="/profile"
+              element={
+                <Profile
+                  clothingItems={clothingItems}
+                  onCardClick={handleCardClick}
+                  handleAddClick={handleOpenAddClothesModal}
+                  handleDeleteItem={handleDeleteGarment}
+                  currentUser={currentUser}
+                />
+              }
+            />
+          </Routes>
+
+          <Footer />
+        </div>
+
+        <AddItemModal
+          isOpen={activeModal === "add-garment"}
+          onClose={handleCloseModal}
+          onAddItem={handleAddGarment}
+        />
+
+        <ItemModal
+          isOpen={activeModal === "preview"}
+          onClose={handleCloseModal}
+          selectedCard={selectedCard}
+        />
+      </CurrentTemperatureUnitContext.Provider>
+    </div>
   );
 }
 
