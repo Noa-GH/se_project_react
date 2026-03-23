@@ -71,7 +71,11 @@ function App() {
   }
 
   function handleRequestDelete(card) {
-    if (!card || card._id === undefined || card._id === null) return;
+    if (!card || card.id === undefined || card.id === null) {
+      console.error("Invalid card for deletion:", card);
+      return;
+    }
+    console.log("Setting card to delete:", card);
     setCardToDelete(card);
     setActiveModal("delete-confirmation");
   }
@@ -81,25 +85,47 @@ function App() {
     const result = await handleAddItem(data);
     if (result.success) {
       handleCloseModal();
+    } else {
+      console.error("Failed to add garment:", result.error);
     }
-    // If error, the hook already set the error state
   }
 
   // Delete item - now uses your custom hook!
   async function handleDeleteGarment(id) {
-    const result = await handleDeleteItem(id);
-    if (result.success) {
-      setCardToDelete(null);
-      setSelectedCard({});
-      handleCloseModal();
+    console.log("Attempting to delete item with ID:", id);
+    try {
+      const result = await handleDeleteItem(id);
+      console.log("Delete result:", result);
+
+      if (result.success) {
+        console.log("Delete successful, closing modals");
+        setCardToDelete(null);
+        setSelectedCard({});
+        handleCloseModal();
+      } else {
+        console.error("Delete failed:", result.error);
+        alert("Failed to delete item. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error in handleDeleteGarment:", error);
+      alert("An error occurred while deleting the item.");
     }
   }
 
   async function handleConfirmDelete() {
-    if (!cardToDelete || cardToDelete._id === undefined || cardToDelete._id === null) {
+    console.log("Confirm delete called with card:", cardToDelete);
+
+    if (!cardToDelete) {
+      console.error("No card to delete");
       return;
     }
-    await handleDeleteGarment(cardToDelete._id);
+
+    if (cardToDelete.id === undefined || cardToDelete.id === null) {
+      console.error("Card has no valid ID:", cardToDelete);
+      return;
+    }
+
+    await handleDeleteGarment(cardToDelete.id);
   }
 
   function handleCancelDelete() {

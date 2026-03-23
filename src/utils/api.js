@@ -23,28 +23,38 @@ export async function getWeatherData(coordinates, apiKey) {
 const baseUrl = "http://localhost:3001";
 
 function checkResponse(response) {
+  console.log("API Response:", response.status, response.statusText);
+  
   if (!response.ok) {
     throw new Error(`Failed to fetch items (status ${response.status}) ${response.statusText}`);
   }
-  if (response.status === 204) {
+  
+  // DELETE requests typically return 204 No Content or 200 OK with empty body
+  if (response.status === 204 || response.status === 200) {
+    console.log("Successful response (no content expected)");
     return null;
   }
 
-  return response.text().then((text) => (text ? JSON.parse(text) : null));
+  return response.text().then((text) => {
+    console.log("Response text:", text);
+    return text ? JSON.parse(text) : null;
+  });
 }
 
 // GET /items
 export function getItems() {
   console.log("Fetching from:", `${baseUrl}/items`);
-  return fetch(`${baseUrl}/items`).then(checkResponse).catch((error) => {
-    console.error("Error fetching details:", error);
-    throw error;
-
-  });
+  return fetch(`${baseUrl}/items`)
+    .then(checkResponse)
+    .catch((error) => {
+      console.error("Error fetching items:", error);
+      throw error;
+    });
 }
 
 // POST /items
 export function addItem({ name, imageUrl, weather }) {
+  console.log("Adding item:", { name, imageUrl, weather });
   return fetch(`${baseUrl}/items`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -54,9 +64,18 @@ export function addItem({ name, imageUrl, weather }) {
 
 // DELETE /items/:id
 export function deleteItem(id) {
+  console.log(`Deleting item with ID: ${id} (type: ${typeof id})`);
   return fetch(`${baseUrl}/items/${id}`, {
     method: "DELETE",
-  }).then(checkResponse);
+  })
+    .then((response) => {
+      console.log("Delete response received:", response.status);
+      return checkResponse(response);
+    })
+    .catch((error) => {
+      console.error("Error deleting item:", error);
+      throw error;
+    });
 }
 
 // PATCH /items/:id

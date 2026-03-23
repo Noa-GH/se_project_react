@@ -17,6 +17,11 @@
   cursor: pointer;
   position: relative;
   z-index: 0;
+  display: grid;
+    grid-template-columns: repeat(3, minmax(325px, 1fr));
+    gap: 20px;
+    padding: 0;
+    margin: 34px 0 0;
 }
 
 .item-card__name {

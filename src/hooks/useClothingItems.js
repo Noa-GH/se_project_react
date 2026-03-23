@@ -16,8 +16,14 @@ function useClothingItems() {
         setError(null);
 
         getItems()
-            .then((data) => setClothingItems(data))
-            .catch((error) => setError(error.message))
+            .then((data) => {
+                console.log("Fetched clothing items:", data);
+                setClothingItems(data);
+            })
+            .catch((error) => {
+                console.error("Error fetching items:", error);
+                setError(error.message);
+            })
             .finally(() => setIsLoading(false));
     }, []);
 
@@ -37,17 +43,37 @@ function useClothingItems() {
         }
     };
 
-    // Delete item
+    // Delete item with improved error handling
     const handleDeleteItem = async (id) => {
+        console.log("useClothingItems: Deleting item with ID:", id, typeof id);
+        
         try {
             setIsLoading(true);
+            setError(null);
+            
+            // Make the API call
             await deleteItem(id);
-            setClothingItems((prevItems) =>
-                prevItems.filter((item) => String(item._id) !== String(id)),
-            );
+            console.log("useClothingItems: API delete successful for ID:", id);
+            
+            // Update local state - filter out the deleted item
+            setClothingItems((prevItems) => {
+                console.log("Previous items:", prevItems);
+                const filteredItems = prevItems.filter((item) => {
+                    // Compare as strings to handle type mismatches
+                    const itemId = String(item.id);
+                    const deleteId = String(id);
+                    const shouldKeep = itemId !== deleteId;
+                    console.log(`Item ${itemId} vs ${deleteId}: ${shouldKeep ? 'keeping' : 'removing'}`);
+                    return shouldKeep;
+                });
+                console.log("Filtered items:", filteredItems);
+                return filteredItems;
+            });
+            
+            console.log("useClothingItems: State updated successfully");
             return { success: true };
         } catch (error) {
-            console.error(`Failed to delete item: ${error.message}`);
+            console.error(`Failed to delete item: ${error.message}`, error);
             setError(error.message);
             return { success: false, error };
         } finally {
