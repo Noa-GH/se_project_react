@@ -26,7 +26,7 @@ function useClothingItems() {
         try {
             setIsLoading(true);
             const added = await addItem(newItem);
-            setClothingItems([added, ...clothingItems]);
+            setClothingItems((prevItems) => [added, ...prevItems]);
             return { success: true, item: added };
         } catch (error) {
             console.error(`Failed to add item: ${error.message}`);
@@ -42,7 +42,9 @@ function useClothingItems() {
         try {
             setIsLoading(true);
             await deleteItem(id);
-            setClothingItems(clothingItems.filter((item) => item._id !== id));
+            setClothingItems((prevItems) =>
+                prevItems.filter((item) => String(item._id) !== String(id)),
+            );
             return { success: true };
         } catch (error) {
             console.error(`Failed to delete item: ${error.message}`);

@@ -1,6 +1,6 @@
 import "./ItemCard.css";
 
-function ItemCard({ item, onCardClick, onDeleteClick }) {
+function ItemCard({ item, onCardClick, onDeleteClick = null }) {
   return (
     <li className="item-card">
       <div className="item-card__header">

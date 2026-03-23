@@ -6,7 +6,7 @@ import Main from "../Main/Main";
 import Footer from "../Footer/Footer";
 import AddItemModal from "../AddItemModal/AddItemModal";
 import ItemModal from "../ItemModal/ItemModal";
-import ToggleSwitch from "../ToggleSwitch/ToggleSwitch";
+import DeleteConfirmationModal from "../DeleteConfirmationModal/DeleteConfirmationModal";
 import { Routes, Route } from "react-router-dom";
 import { getWeatherData } from "../../utils/api";
 import { coordinates, APIkey } from "../../utils/constants";
@@ -28,6 +28,7 @@ function App() {
   // Modal state
   const [activeModal, setActiveModal] = useState("");
   const [selectedCard, setSelectedCard] = useState({});
+  const [cardToDelete, setCardToDelete] = useState(null);
 
   // Temperature unit
   const [currentTemperatureUnit, setCurrentTemperatureUnit] = useState("F");
@@ -69,6 +70,12 @@ function App() {
     setSelectedCard(card);
   }
 
+  function handleRequestDelete(card) {
+    if (!card || card._id === undefined || card._id === null) return;
+    setCardToDelete(card);
+    setActiveModal("delete-confirmation");
+  }
+
   // Add garment - now uses your custom hook!
   async function handleAddGarment(data) {
     const result = await handleAddItem(data);
@@ -82,8 +89,22 @@ function App() {
   async function handleDeleteGarment(id) {
     const result = await handleDeleteItem(id);
     if (result.success) {
+      setCardToDelete(null);
+      setSelectedCard({});
       handleCloseModal();
     }
+  }
+
+  async function handleConfirmDelete() {
+    if (!cardToDelete || cardToDelete._id === undefined || cardToDelete._id === null) {
+      return;
+    }
+    await handleDeleteGarment(cardToDelete._id);
+  }
+
+  function handleCancelDelete() {
+    setCardToDelete(null);
+    setActiveModal("preview");
   }
 
   // Close on Escape key
@@ -169,7 +190,6 @@ function App() {
                   clothingItems={clothingItems}
                   onCardClick={handleCardClick}
                   handleAddClick={handleOpenAddClothesModal}
-                  handleDeleteItem={handleDeleteGarment}
                   currentUser={currentUser}
                 />
               }
@@ -189,7 +209,13 @@ function App() {
           isOpen={activeModal === "preview"}
           onClose={handleCloseModal}
           selectedCard={selectedCard}
-          onDeleteClick={handleDeleteGarment}
+          onRequestDelete={handleRequestDelete}
+        />
+        <DeleteConfirmationModal
+          isOpen={activeModal === "delete-confirmation"}
+          onClose={handleCancelDelete}
+          onConfirm={handleConfirmDelete}
+          itemName={cardToDelete?.name}
         />
       </CurrentTemperatureUnitContext.Provider>
     </div>

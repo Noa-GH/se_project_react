@@ -52,5 +52,6 @@
 }
 
 .modal__delete-btn:hover {
-  color: #000;
+  opacity: 0.5;
+  cursor: pointer;
 }

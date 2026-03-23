@@ -18,11 +18,10 @@ interface ProfileProps {
   clothingItems: ClothingItem[];
   onCardClick: (card: ClothingItem) => void;
   handleAddClick: () => void;
-  handleDeleteItem: (id: number) => void;
   currentUser: User;
 }
 
-function Profile({ clothingItems, onCardClick, handleAddClick, handleDeleteItem, currentUser }: ProfileProps) {
+function Profile({ clothingItems, onCardClick, handleAddClick, currentUser }: ProfileProps) {
   return (
     <div className="profile">
       <SideBar currentUser={currentUser} />
@@ -30,7 +29,6 @@ function Profile({ clothingItems, onCardClick, handleAddClick, handleDeleteItem,
         clothingItems={clothingItems}
         onCardClick={onCardClick}
         handleAddClick={handleAddClick}
-        handleDeleteItem={handleDeleteItem}
       />
     </div>
   );

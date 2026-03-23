@@ -1,7 +1,7 @@
 import "./ItemModal.css";
 import closeButtonLight from "../../assets/icons/Close-button_light.svg";
 
-function ItemModal({ isOpen, onClose, selectedCard, onDeleteClick }) {
+function ItemModal({ isOpen, onClose, selectedCard, onRequestDelete }) {
   function handleOverlayClick(e) {
     if (e.target === e.currentTarget) {
       onClose();
@@ -36,7 +36,7 @@ function ItemModal({ isOpen, onClose, selectedCard, onDeleteClick }) {
           <button
             className="modal__delete-btn"
             type="button"
-            onClick={() => onDeleteClick(selectedCard._id)}
+            onClick={() => onRequestDelete(selectedCard)}
           >
             Delete Item
           </button>

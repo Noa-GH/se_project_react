@@ -9,9 +9,10 @@
 }
 
 .clothes-section__header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+    display: flex;
+      align-items: center;
+      gap: 20px;
+      /* justify-content: space-between; */
 }
 
 .clothes-section__title {

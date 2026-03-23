@@ -26,14 +26,18 @@ function checkResponse(response) {
   if (!response.ok) {
     throw new Error(`Failed to fetch items (status ${response.status}) ${response.statusText}`);
   }
-  return response.json();
+  if (response.status === 204) {
+    return null;
+  }
+
+  return response.text().then((text) => (text ? JSON.parse(text) : null));
 }
 
 // GET /items
 export function getItems() {
   console.log("Fetching from:", `${baseUrl}/items`);
-  return fetch(`${baseUrl}/items`).then(checkResponse).catch(erro => {
-    console.error("Error fetching details:", erro);
+  return fetch(`${baseUrl}/items`).then(checkResponse).catch((error) => {
+    console.error("Error fetching details:", error);
     throw error;
 
   });
