@@ -14,16 +14,42 @@
   overflow: hidden;
 }
 
+.modal__image {
+  padding: 0;
+  margin-bottom: 20px;
+}
+
 .modal__caption,
 .modal__weather {
   font-size: 20px;
   font-weight: 700;
+  margin: 0;
+  padding: 0;
 }
 
-.modal__caption {
-  margin-bottom: 12px;
-}
 
 .modal__footer {
   padding: 0 0 32px 32px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+
 }
+
+.modal__delete-btn {
+  position: absolute;
+  top: 0;
+  right: 32px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: #FF4D00;
+  padding: 0;
+  margin: 0;
+  font-size: 20px;
+  font-weight: 700;
+  font-family: inherit;
+}
+
+.modal__delete-btn:hover {
+  color: #000;

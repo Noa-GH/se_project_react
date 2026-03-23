@@ -11,10 +11,10 @@ interface ClothesSectionProps {
   clothingItems: ClothingItem[];
   onCardClick: (card: ClothingItem) => void;
   handleAddClick: () => void;
-  handleDeleteItem: (id: number) => void;
+  onDeleteClick: (id: number) => void;
 }
 
-function ClothesSection({ clothingItems, onCardClick, handleAddClick, handleDeleteItem }: ClothesSectionProps) {
+function ClothesSection({ clothingItems, onCardClick, handleAddClick }: ClothesSectionProps) {
   return (
     <div className="clothes-section">
       <div className="clothes-section__header">
@@ -34,7 +34,6 @@ function ClothesSection({ clothingItems, onCardClick, handleAddClick, handleDele
             key={item._id}
             item={item}
             onCardClick={onCardClick}
-            onDeleteClick={handleDeleteItem}
           />
         ))}
       </ul>
