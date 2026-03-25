@@ -1,5 +1,7 @@
 // src/hooks/useModal.js
-function useModal() {
+import {useState} from "react";
+
+export function useModal() {
     const [activeModal, setActiveModal] = useState("");
     const [selectedCard, setSelectedCard] = useState(null);
 
@@ -15,3 +17,4 @@ function useModal() {
 
     return { activeModal, selectedCard, openModal, closeModal };
 }
+

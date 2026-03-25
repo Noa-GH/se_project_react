@@ -23,7 +23,7 @@ export async function getWeatherData(coordinates, apiKey) {
 const baseUrl = "http://localhost:3001";
 
 function checkResponse(response) {
-  console.log("API Response:", response.status, response.statusText);
+  // console.log("API Response:", response.status, response.statusText);
   
   if (!response.ok) {
     throw new Error(`Failed to fetch items (status ${response.status}) ${response.statusText}`);
@@ -31,7 +31,7 @@ function checkResponse(response) {
   
   // DELETE requests typically return 204 No Content or 200 OK with empty body
   if (response.status === 204 || response.status === 200) {
-    console.log("Successful response (no content expected)");
+    // console.log("Successful response (no content expected)");
     return null;
   }
 
@@ -43,7 +43,7 @@ function checkResponse(response) {
 
 // GET /items
 export function getItems() {
-  console.log("Fetching from:", `${baseUrl}/items`);
+  // console.log("Fetching from:", `${baseUrl}/items`);
   return fetch(`${baseUrl}/items`)
     .then(checkResponse)
     .catch((error) => {

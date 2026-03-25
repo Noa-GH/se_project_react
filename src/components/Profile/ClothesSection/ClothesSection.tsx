@@ -1,7 +1,10 @@
 import "./ClothesSection.css";
 import ItemCard from "../../ItemCard/ItemCard";
+
+// const [ clothingItems, setClothingItems ] = useState([]);
+
 interface ClothingItem {
-  _id: number;
+  id: number;
   name: string;
   imageUrl?: string;
   weather: string;
@@ -32,9 +35,9 @@ function ClothesSection({
       </div>
 
       <ul className="clothes-section__items">
-        {clothingItems.map((item) => (
+        {clothingItems?.map((item) => (
           <ItemCard
-            key={item._id}
+            key={item.id}
             item={item}
             onCardClick={onCardClick}
             onDeleteClick={undefined}

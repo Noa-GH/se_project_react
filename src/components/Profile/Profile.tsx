@@ -3,9 +3,9 @@ import SideBar from "./SideBar/SideBar";
 import ClothesSection from "./ClothesSection/ClothesSection";
 
 interface ClothingItem {
-  _id: number;
-  name: string;
+  id: number;
   imageUrl?: string;
+  name: string;
   weather: string;
 }
 

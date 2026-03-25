@@ -9,7 +9,7 @@ function ItemCard({ item, onCardClick, onDeleteClick = null }) {
           <button
             className="item-card__delete-btn"
             type="button"
-            onClick={() => onDeleteClick(item._id)}
+            onClick={() => onDeleteClick(item.id)}
           >
             Delete
           </button>

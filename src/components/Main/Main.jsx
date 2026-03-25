@@ -6,8 +6,8 @@ import CurrentTemperatureUnitContext from "../../context/CurrentTemperatureUnitC
 
 function Main({ weatherData, onCardClick, clothingItems }) {
   const { currentTemperatureUnit } = useContext(CurrentTemperatureUnitContext);
-
-  const filteredClothingItems = clothingItems.filter((item) => {
+  console.log(clothingItems);
+  const filteredClothingItems = (clothingItems || []).filter((item) => {
     // We still use Fahrenheit as our internal baseline for logic
     const temp = weatherData.temperature.F;
     if (temp >= 86) return item.weather === "hot";
@@ -25,7 +25,7 @@ function Main({ weatherData, onCardClick, clothingItems }) {
         </p>
         <ul className="main__items">
           {filteredClothingItems.map((item) => (
-            <ItemCard key={item._id} item={item} onCardClick={onCardClick} />
+            <ItemCard key={item.id} item={item} onCardClick={onCardClick} />
           ))}
         </ul>
       </section>

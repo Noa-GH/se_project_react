@@ -128,6 +128,7 @@ function ModalWithForm({
               required={fieldSchemas.name.required}
               minLength={fieldSchemas.name.minLength}
               maxLength={fieldSchemas.name.maxLength}
+              autoComplete={"username"}
             />
             <span
               id="name-error"
