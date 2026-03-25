@@ -69,7 +69,7 @@ function App() {
     setActiveModal("preview");
     setSelectedCard(card);
   }
-
+  // Look into this guard in future
   function handleRequestDelete(card) {
     if (!card || card.id === undefined || card.id === null) {
       console.error("Invalid card for deletion:", card);

@@ -30,20 +30,17 @@ function checkResponse(response) {
   }
   
   // DELETE requests typically return 204 No Content or 200 OK with empty body
-  if (response.status === 204 || response.status === 200) {
-    // console.log("Successful response (no content expected)");
+  if (response.status === 204) {
+    console.log("Successful response (no content expected)");
     return null;
   }
 
-  return response.text().then((text) => {
-    console.log("Response text:", text);
-    return text ? JSON.parse(text) : null;
-  });
+  return response.json();
 }
 
 // GET /items
 export function getItems() {
-  // console.log("Fetching from:", `${baseUrl}/items`);
+  console.log("Fetching from:", `${baseUrl}/items`);
   return fetch(`${baseUrl}/items`)
     .then(checkResponse)
     .catch((error) => {

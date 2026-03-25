@@ -10,7 +10,7 @@ function useClothingItems() {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
 
-    // Fetch items on mount (what you already had!)
+    // Fetch items on mount
     useEffect(() => {
         setIsLoading(true);
         setError(null);
