@@ -1,7 +1,7 @@
 import "./App.css";
 import avatarUrl from "../../assets/icons/avatar-icons/AviPlaceholderTrue.svg";
 import Header from "../Header/Header";
-import Profile from "../Profile/Profile.jsx";
+import Profile from "../Profile/Profile";
 import Main from "../Main/Main";
 import Footer from "../Footer/Footer";
 import AddItemModal from "../AddItemModal/AddItemModal";
