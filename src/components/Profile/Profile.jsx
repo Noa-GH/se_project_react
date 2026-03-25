@@ -1,5 +1,5 @@
-import "./Profile.css";
-import SideBar from "./SideBar/SideBar";
+// import "./Profile.css";
+import SideBar from "./SideBar/SideBar.jsx";
 import ClothesSection from "./ClothesSection/ClothesSection";
 
 interface ClothingItem {
