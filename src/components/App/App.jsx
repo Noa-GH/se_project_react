@@ -41,7 +41,6 @@ function App() {
     error,
     handleAddItem,
     handleDeleteItem,
-    // Not sure why this is unused??
     refetch,
   } = useClothingItems();
 
@@ -70,11 +69,9 @@ function App() {
     setActiveModal("preview");
     setSelectedCard(card);
   }
-  // Look into this guard in future
   function handleRequestDelete(card) {
     const key = card.id ?? card._id;
 
-    // Needs work
     if (!card || key == null) {
       console.error("Invalid card for deletion:", card);
       return;
@@ -96,13 +93,10 @@ function App() {
 
   // Delete item - now uses your custom hook!
   async function handleDeleteGarment(id) {
-    console.log("Attempting to delete item with ID:", id);
     try {
       const result = await handleDeleteItem(id);
-      console.log("Delete result:", result);
 
       if (result.success) {
-        console.log("Delete successful, closing modals");
         setCardToDelete(null);
         setSelectedCard({});
         handleCloseModal();
@@ -116,8 +110,7 @@ function App() {
     }
   }
 
-  async function handleConfirmDelete() {
-    console.log("Confirm delete called with card:", cardToDelete);
+  async function handleConfirmDelete(id) {
 
     if (!cardToDelete) {
       console.error("No card to delete");
@@ -127,7 +120,8 @@ function App() {
     const itemId = cardToDelete.id ?? cardToDelete._id;
 
     if (!itemId) {
-      console.log("Card has no valid ID:", cardToDelete);
+      console.error("Card has no valid ID:", cardToDelete);
+      return;
     }
     await handleDeleteGarment(itemId);
   }
