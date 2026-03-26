@@ -1,20 +1,16 @@
-<<<<<<< HEAD:src/components/ToggleSwitch/ToggleSwitch.tsx
-// import './ToggleSwitch.css';
-import React, { useContext } from 'react';
-import CurrentTemperatureUnitContext from '../../context/CurrentTemperatureUnitContext';
-=======
 import "./ToggleSwitch.css";
 import { useContext } from "react";
 import CurrentTemperatureUnitContext from "../../context/CurrentTemperatureUnitContext";
->>>>>>> fc41f70 (Resolved: Issues with styling of ToggleSwitch, Profile, SideBar, ClothingSection, and AddItemModal have been fixed by readding their respected CSS files.):src/components/ToggleSwitch/ToggleSwitch.jsx
 
 const TemperatureToggle: React.FC = () => {
   // Get unit and setUnit from context instead of local state
-  const { currentTemperatureUnit, handleToggleSwitchChange } = useContext(CurrentTemperatureUnitContext);
+  const { currentTemperatureUnit, handleToggleSwitchChange } = useContext(
+    CurrentTemperatureUnitContext,
+  );
 
   // Handle the toggle click
   const handleToggle = () => {
-    const newUnit = currentTemperatureUnit === 'F' ? 'C' : 'F';
+    const newUnit = currentTemperatureUnit === "F" ? "C" : "F";
     handleToggleSwitchChange(newUnit);
     // Context automatically updates all components using useTemperature()
   };
@@ -22,7 +18,7 @@ const TemperatureToggle: React.FC = () => {
   return (
     <div className="temperature-toggle-container">
       <button
-        className={`temperature-toggle ${currentTemperatureUnit === 'F' ? 'is-fahrenheit' : 'is-celsius'}`}
+        className={`temperature-toggle ${currentTemperatureUnit === "F" ? "is-fahrenheit" : "is-celsius"}`}
         onClick={handleToggle}
         aria-label={`Toggle temperature unit. Currently set to ${currentTemperatureUnit}`}
       >
