@@ -1,4 +1,4 @@
-// import "./SideBar.css";
+import "./SideBar.css";
 
 function SideBar({ currentUser }) {
   return (

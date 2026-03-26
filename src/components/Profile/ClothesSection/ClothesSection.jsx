@@ -1,4 +1,4 @@
-// import "./ClothesSection.css";
+import "./ClothesSection.css";
 import ItemCard from "../../ItemCard/ItemCard";
 
 // const [ clothingItems, setClothingItems ] = useState([]);
