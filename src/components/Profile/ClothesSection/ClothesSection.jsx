@@ -1,27 +1,9 @@
 // import "./ClothesSection.css";
 import ItemCard from "../../ItemCard/ItemCard";
-// import ClothingItem from "../../../utils/types"; // Import the shared interface
 
 // const [ clothingItems, setClothingItems ] = useState([]);
 
-interface ClothingItem {
-  id: string;
-  name: string;
-  imageUrl?: string;
-  weather: string;
-}
-
-interface ClothesSectionProps {
-  clothingItems: ClothingItem[];
-  onCardClick: (card: ClothingItem) => void;
-  handleAddClick: () => void;
-}
-
-function ClothesSection({
-  clothingItems,
-  onCardClick,
-  handleAddClick,
-}: ClothesSectionProps) {
+function ClothesSection({ clothingItems, onCardClick, handleAddClick }) {
   return (
     <div className="clothes-section">
       <div className="clothes-section__header">
