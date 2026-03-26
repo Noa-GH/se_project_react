@@ -6,18 +6,18 @@ module.exports = {
     "plugin:react/recommended",
     "plugin:react/jsx-runtime",
     "plugin:react-hooks/recommended",
-    "plugin:@typescript-eslint/recommended", // <--- ADD THIS
+    // "plugin:@typescript-eslint/recommended", // <--- ADD THIS
   ],
   ignorePatterns: ["dist", ".eslintrc.cjs"],
   // Change the parser to the TS one
-  parser: "@typescript-eslint/parser", // <--- ADD THIS
+  // parser: "@typescript-eslint/parser", // <--- ADD THIS
   parserOptions: {
     ecmaVersion: "latest",
     sourceType: "module",
-    project: ["./tsconfig.json"], // <--- ADD THIS so ESLint knows your TS rules
+    // project: ["./tsconfig.json"], // <--- ADD THIS so ESLint knows your TS rules
   },
   settings: { react: { version: "18.2" } },
-  plugins: ["react-refresh", "@typescript-eslint"], // <--- ADD THIS
+  plugins: ["react-refresh"],
   rules: {
     "react/jsx-no-target-blank": "off",
     "react-refresh/only-export-components": [

@@ -86,10 +86,14 @@ function ModalWithForm({
     if (onSubmit) {
       onSubmit(data);
     }
-
-    // Reset form
-    formRef.current.reset();
-    setIsFormValid(false);
+    // Needs work
+    onSubmit(formData)
+      .then(() => {
+        reset(); // Only reset on success
+      })
+      .catch(() => {
+        // Keep form data for retry
+      });
   }
 
   // Debug logging (commented out for production)
@@ -192,8 +196,9 @@ function ModalWithForm({
 
           {/* Submit Button - Disabled when form is invalid */}
           <button
-            className={`modal__submit-btn modal__submit-button ${!isFormValid ? "modal__submit-button_disabled" : ""
-              }`}
+            className={`modal__submit-btn modal__submit-button ${
+              !isFormValid ? "modal__submit-button_disabled" : ""
+            }`}
             type="submit"
             disabled={!isFormValid}
           >

@@ -1,14 +1,16 @@
 import "./SideBar.css";
 
-function SideBar({ currentUser }) {
+function SideBar({ className, currentUser }) {
   return (
-    <div className="sidebar">
-      <img
-        className="sidebar__avatar"
-        src={currentUser.avatar}
-        alt={`${currentUser.name}'s avatar`}
-      />
-      <p className="sidebar__username">{currentUser.name}</p>
+    <div className={className}>
+      <div className="sidebar">
+        <img
+          src={currentUser.avatar}
+          alt={currentUser.name}
+          className="sidebar__avatar"
+        />
+        <h2 className="sidebar__username">{currentUser.name}</h2>
+      </div>
     </div>
   );
 }

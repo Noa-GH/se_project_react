@@ -6,8 +6,6 @@ function DeleteConfirmationModal({ isOpen, onClose, onConfirm, itemName }) {
     if (e.target === e.currentTarget) {
       onClose();
     }
-
-    console.log("DeleteConfirmationModal clicked");
   }
 
   return (

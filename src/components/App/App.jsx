@@ -41,7 +41,8 @@ function App() {
     error,
     handleAddItem,
     handleDeleteItem,
-    clearError,
+    // Not sure why this is unused??
+    refetch,
   } = useClothingItems();
 
   const currentUser = {
@@ -71,11 +72,14 @@ function App() {
   }
   // Look into this guard in future
   function handleRequestDelete(card) {
-    if (!card || card.id === undefined || card.id === null) {
+    const key = card.id ?? card._id;
+
+    // Needs work
+    if (!card || key == null) {
       console.error("Invalid card for deletion:", card);
       return;
     }
-    console.log("Setting card to delete:", card);
+
     setCardToDelete(card);
     setActiveModal("delete-confirmation");
   }
@@ -120,12 +124,12 @@ function App() {
       return;
     }
 
-    if (cardToDelete.id === undefined || cardToDelete.id === null) {
-      console.error("Card has no valid ID:", cardToDelete);
-      return;
-    }
+    const itemId = cardToDelete.id ?? cardToDelete._id;
 
-    await handleDeleteGarment(cardToDelete.id);
+    if (!itemId) {
+      console.log("Card has no valid ID:", cardToDelete);
+    }
+    await handleDeleteGarment(itemId);
   }
 
   function handleCancelDelete() {
@@ -180,7 +184,7 @@ function App() {
       <div className="page">
         <div className="page__error">
           Error: {error}
-          <button onClick={clearError}>Try Again</button>
+          <button onClick={refetch}>Try Again</button>
         </div>
       </div>
     );

@@ -11,7 +11,9 @@ export async function getWeatherData(coordinates, apiKey) {
 
   const response = await fetch(url.toString());
   if (!response.ok) {
-    throw new Error(`OpenWeatherMap request failed (status ${response.status})`);
+    throw new Error(
+      `OpenWeatherMap request failed (status ${response.status})`,
+    );
   }
   return response.json();
 }
@@ -24,14 +26,15 @@ const baseUrl = "http://localhost:3001";
 
 function checkResponse(response) {
   // console.log("API Response:", response.status, response.statusText);
-  
+
   if (!response.ok) {
-    throw new Error(`Failed to fetch items (status ${response.status}) ${response.statusText}`);
+    throw new Error(
+      `Failed to fetch items (status ${response.status}) ${response.statusText}`,
+    );
   }
-  
+
   // DELETE requests typically return 204 No Content or 200 OK with empty body
   if (response.status === 204) {
-    console.log("Successful response (no content expected)");
     return null;
   }
 
@@ -40,7 +43,6 @@ function checkResponse(response) {
 
 // GET /items
 export function getItems() {
-  console.log("Fetching from:", `${baseUrl}/items`);
   return fetch(`${baseUrl}/items`)
     .then(checkResponse)
     .catch((error) => {
@@ -51,7 +53,6 @@ export function getItems() {
 
 // POST /items
 export function addItem({ name, imageUrl, weather }) {
-  console.log("Adding item:", { name, imageUrl, weather });
   return fetch(`${baseUrl}/items`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -61,12 +62,10 @@ export function addItem({ name, imageUrl, weather }) {
 
 // DELETE /items/:id
 export function deleteItem(id) {
-  console.log(`Deleting item with ID: ${id} (type: ${typeof id})`);
   return fetch(`${baseUrl}/items/${id}`, {
     method: "DELETE",
   })
     .then((response) => {
-      console.log("Delete response received:", response.status);
       return checkResponse(response);
     })
     .catch((error) => {

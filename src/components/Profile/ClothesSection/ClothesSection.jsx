@@ -3,31 +3,25 @@ import ItemCard from "../../ItemCard/ItemCard";
 
 // const [ clothingItems, setClothingItems ] = useState([]);
 
-function ClothesSection({ clothingItems, onCardClick, handleAddClick }) {
+function ClothesSection({ className, clothingItems, onCardClick, handleAddClick }) {
   return (
-    <div className="clothes-section">
+    <section className={className}>
       <div className="clothes-section__header">
-        <p className="clothes-section__title">Your Items</p>
-        <button
-          className="clothes-section__add-btn"
-          type="button"
-          onClick={handleAddClick}
-        >
-          + Add New
+        <h2 className="clothes-section__title">Your Items</h2>
+        <button className="clothes-section__add-btn" onClick={handleAddClick}>
+          + Add new
         </button>
       </div>
-
       <ul className="clothes-section__items">
-        {clothingItems?.map((item) => (
+        {clothingItems.map((item) => (
           <ItemCard
             key={item.id}
             item={item}
             onCardClick={onCardClick}
-            onDeleteClick={undefined}
           />
         ))}
       </ul>
-    </div>
+    </section>
   );
 }
 
