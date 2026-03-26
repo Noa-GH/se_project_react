@@ -1,6 +1,6 @@
 import "./ToggleSwitch.css";
 import { useContext } from "react";
-import CurrentTemperatureUnitContext from "../../context/CurrentTemperatureUnitContext";
+import CurrentTemperatureUnitContext from "../context/CurrentTemperatureUnitContext";
 
 const TemperatureToggle = () => {
   // Get unit and setUnit from context instead of local state

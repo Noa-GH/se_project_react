@@ -1,5 +1,5 @@
 import "./Header.css";
-import ToggleSwitch from "../ToggleSwitch/ToggleSwitch.jsx";
+import ToggleSwitch from "../ToggleSwitch.jsx";
 import logo from "../../assets/icons/logo/Logo.svg";
 import { Link } from "react-router-dom";
 
@@ -8,7 +8,13 @@ const currentDate = new Date().toLocaleDateString("default", {
   month: "long",
 });
 
-function Header({ onAddClothesClick, weatherData, toggleSwitch, onToggleSwitch, currentUser }) {
+function Header({
+  onAddClothesClick,
+  weatherData,
+  toggleSwitch,
+  onToggleSwitch,
+  currentUser,
+}) {
   return (
     <header className="header">
       <div className="header__logo">
