@@ -1,6 +1,12 @@
+<<<<<<< HEAD:src/components/ToggleSwitch/ToggleSwitch.tsx
 // import './ToggleSwitch.css';
 import React, { useContext } from 'react';
 import CurrentTemperatureUnitContext from '../../context/CurrentTemperatureUnitContext';
+=======
+import "./ToggleSwitch.css";
+import { useContext } from "react";
+import CurrentTemperatureUnitContext from "../../context/CurrentTemperatureUnitContext";
+>>>>>>> fc41f70 (Resolved: Issues with styling of ToggleSwitch, Profile, SideBar, ClothingSection, and AddItemModal have been fixed by readding their respected CSS files.):src/components/ToggleSwitch/ToggleSwitch.jsx
 
 const TemperatureToggle: React.FC = () => {
   // Get unit and setUnit from context instead of local state

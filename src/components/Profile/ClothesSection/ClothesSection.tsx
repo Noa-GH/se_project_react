@@ -1,4 +1,4 @@
-// import "./ClothesSection.css";
+import "./ClothesSection.css";
 import ItemCard from "../../ItemCard/ItemCard";
 // import ClothingItem from "../../../utils/types"; // Import the shared interface
 
