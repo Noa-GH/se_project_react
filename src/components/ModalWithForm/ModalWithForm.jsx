@@ -15,10 +15,12 @@ function ModalWithForm({
   isOpen,
   onClose,
   onSubmit,
+  isLoading,
   children,
 }) {
   const [isFormValid, setIsFormValid] = useState(false);
   const formRef = useRef(null);
+  const isSubmittingRef = useRef(false);
 
   // Validate form on mount and when inputs change
   useEffect(() => {
@@ -85,7 +87,7 @@ function ModalWithForm({
   // Handle form submission
   function handleSubmit(e) {
     e.preventDefault();
-    if (!isFormValid) return;
+    if (!isFormValid || isSubmittingRef.current) return;
 
     // Collect form data
     const formData = new FormData(formRef.current);
@@ -93,6 +95,7 @@ function ModalWithForm({
 
     // Call parent's submit handler if provided
     if (onSubmit) {
+      isSubmittingRef.current = true;
       onSubmit(data)
         .then(() => {
           if (formRef.current) {
@@ -102,6 +105,9 @@ function ModalWithForm({
         .catch((err) => {
           console.error("Form submission failed:", err);
           // Keep form data for retry
+        })
+        .finally(() => {
+          isSubmittingRef.current = false;
         });
     }
   }
@@ -204,14 +210,14 @@ function ModalWithForm({
             ></span>
           </fieldset>
 
-          {/* Submit Button - Disabled when form is invalid */}
+          {/* Submit Button - Disabled when form is invalid or loading */}
           <button
-            className={`modal__submit-btn modal__submit-button ${!isFormValid ? "modal__submit-button_disabled" : ""
+            className={`modal__submit-btn modal__submit-button ${(!isFormValid || isLoading) ? "modal__submit-button_disabled" : ""
               }`}
             type="submit"
-            disabled={!isFormValid}
+            disabled={!isFormValid || isLoading}
           >
-            {buttonText}
+            {isLoading ? "Saving..." : buttonText}
           </button>
         </form>
       </div>

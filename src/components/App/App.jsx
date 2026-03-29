@@ -227,6 +227,7 @@ function App() {
           isOpen={activeModal === "add-garment"}
           onClose={handleCloseModal}
           onAddItem={handleAddGarment}
+          isLoading={isLoading}
         />
 
         <ItemModal

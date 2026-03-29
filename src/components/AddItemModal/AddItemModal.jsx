@@ -1,6 +1,6 @@
 import ModalWithForm from "../ModalWithForm/ModalWithForm";
 
-function AddItemModal({ isOpen, onAddItem, onClose }) {
+function AddItemModal({ isOpen, onAddItem, onClose, isLoading }) {
   return (
     <ModalWithForm
       title="New Garment"
@@ -9,6 +9,7 @@ function AddItemModal({ isOpen, onAddItem, onClose }) {
       isOpen={isOpen}
       onClose={onClose}
       onSubmit={onAddItem}
+      isLoading={isLoading}
     >
       {/* Form fields will be inserted here */}
     </ModalWithForm>
