@@ -24,7 +24,7 @@ function ModalWithForm({
   useEffect(() => {
     if (!formRef.current || !isOpen) return;
 
-    const validateForm = () => {
+    const validateForm = (shouldShowErrors = true) => {
       const inputs = formRef.current.querySelectorAll(
         ".modal__input, .modal__radio-button",
       );
@@ -35,7 +35,9 @@ function ModalWithForm({
 
         if (!validation.isValid) {
           isValid = false;
-          showValidationError(input, validation.errorMessage);
+          if (shouldShowErrors) {
+            showValidationError(input, validation.errorMessage);
+          }
         } else {
           clearValidationError(input);
         }
@@ -44,24 +46,31 @@ function ModalWithForm({
       setIsFormValid(isValid);
     };
 
-    // Initial validation
-    validateForm();
-
-    // Add listeners to all inputs
+    // Get all inputs
     const inputs = formRef.current.querySelectorAll(
       ".modal__input, .modal__radio-button",
     );
+
+    // Initial state: clear any old errors from previous opens
+    inputs.forEach((input) => clearValidationError(input));
+
+    // Initial validation to set isFormValid, but DON'T show errors yet
+    validateForm(false);
+
+    // Add listeners to show errors ONLY on interaction
+    const handleInteraction = () => validateForm(true);
+
     inputs.forEach((input) => {
-      input.addEventListener("input", validateForm);
-      input.addEventListener("change", validateForm);
-      input.addEventListener("blur", validateForm);
+      input.addEventListener("input", handleInteraction);
+      input.addEventListener("change", handleInteraction);
+      input.addEventListener("blur", handleInteraction);
     });
 
     return () => {
       inputs.forEach((input) => {
-        input.removeEventListener("input", validateForm);
-        input.removeEventListener("change", validateForm);
-        input.removeEventListener("blur", validateForm);
+        input.removeEventListener("input", handleInteraction);
+        input.removeEventListener("change", handleInteraction);
+        input.removeEventListener("blur", handleInteraction);
       });
     };
   }, [isOpen]);
@@ -84,16 +93,17 @@ function ModalWithForm({
 
     // Call parent's submit handler if provided
     if (onSubmit) {
-      onSubmit(data);
+      onSubmit(data)
+        .then(() => {
+          if (formRef.current) {
+            formRef.current.reset(); // Reset the uncontrolled form
+          }
+        })
+        .catch((err) => {
+          console.error("Form submission failed:", err);
+          // Keep form data for retry
+        });
     }
-    // Needs work
-    onSubmit(formData)
-      .then(() => {
-        reset(); // Only reset on success
-      })
-      .catch(() => {
-        // Keep form data for retry
-      });
   }
 
   // Debug logging (commented out for production)
@@ -196,9 +206,8 @@ function ModalWithForm({
 
           {/* Submit Button - Disabled when form is invalid */}
           <button
-            className={`modal__submit-btn modal__submit-button ${
-              !isFormValid ? "modal__submit-button_disabled" : ""
-            }`}
+            className={`modal__submit-btn modal__submit-button ${!isFormValid ? "modal__submit-button_disabled" : ""
+              }`}
             type="submit"
             disabled={!isFormValid}
           >

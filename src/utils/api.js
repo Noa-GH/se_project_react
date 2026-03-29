@@ -52,7 +52,7 @@ export function getItems() {
 }
 
 // POST /items
-export function addItem({ name, imageUrl, weather }) {
+export function addItem({ name, weather, imageUrl }) {
   return fetch(`${baseUrl}/items`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
