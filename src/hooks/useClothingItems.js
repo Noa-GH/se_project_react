@@ -1,17 +1,24 @@
 // src/hooks/useClothingItems.js
 
 // Custom hook for managing clothing items
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { getItems, addItem, deleteItem } from "../utils/api";
 
 function useClothingItems() {
+  const hasFetchedItems = useRef(false);
+
   // State management
   const [clothingItems, setClothingItems] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  // Fetch items on mount
+  // Fetch items on mount (guard for React StrictMode re-mount in development)
   useEffect(() => {
+    if (hasFetchedItems.current) {
+      return;
+    }
+    hasFetchedItems.current = true;
+
     setIsLoading(true);
     setError(null);
     getItems()

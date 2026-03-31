@@ -9,9 +9,12 @@ import ItemModal from "../ItemModal/ItemModal";
 import DeleteConfirmationModal from "../DeleteConfirmationModal/DeleteConfirmationModal";
 import { Routes, Route } from "react-router-dom";
 import { getWeatherData } from "../../utils/api";
-import { coordinates, APIkey } from "../../utils/constants";
+import {
+  coordinates as defaultCoordinates,
+  APIkey,
+} from "../../utils/constants";
 import CurrentTemperatureUnitContext from "../../context/CurrentTemperatureUnitContext";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 
 // Your custom hook!
 import useClothingItems from "../../hooks/useClothingItems";
@@ -32,6 +35,11 @@ function App() {
 
   // Temperature unit
   const [currentTemperatureUnit, setCurrentTemperatureUnit] = useState("F");
+
+  // Geolocation state (per-user, with fallback)
+  const [hasLocationPermission, setHasLocationPermission] = useState(null); // null | true | false
+  const [locationMessage, setLocationMessage] = useState("");
+  const [showLocationStatus, setShowLocationStatus] = useState(false);
 
   // 🎉 USE YOUR CUSTOM HOOK HERE!
   // This replaces all the clothing item logic that was in App.jsx
@@ -110,8 +118,7 @@ function App() {
     }
   }
 
-  async function handleConfirmDelete(id) {
-
+  async function handleConfirmDelete() {
     if (!cardToDelete) {
       console.error("No card to delete");
       return;
@@ -145,23 +152,134 @@ function App() {
     return () => document.removeEventListener("keydown", handleKeyDown);
   }, [activeModal]);
 
-  // Fetch weather data on mount
-  useEffect(() => {
-    getWeatherData(coordinates, APIkey)
-      .then((data) => {
-        const weather = {};
-        weather.temperature = {};
-        weather.temperature.F = Math.round(data.main.temp);
-        weather.temperature.C = Math.round(((data.main.temp - 32) * 5) / 9);
-        weather.city = data.name;
-        weather.condition = data.weather[0].description;
-        weather.image = `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
-        setWeatherData(weather);
-      })
-      .catch((error) => {
-        console.error("Failed to fetch weather data:", error);
-      });
+  const fetchAndSetWeather = useCallback(async (coords) => {
+    try {
+      const data = await getWeatherData(coords, APIkey);
+      const weather = {
+        temperature: {
+          F: Math.round(data.main.temp),
+          C: Math.round(((data.main.temp - 32) * 5) / 9),
+        },
+        city: data.name,
+        condition: data.weather[0].description,
+        image: `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`,
+      };
+      setWeatherData(weather);
+    } catch (error) {
+      console.error("Failed to fetch weather data:", error);
+      setLocationMessage(
+        "Unable to fetch local weather; showing fallback location.",
+      );
+    }
   }, []);
+
+  const [showLocationPrompt, setShowLocationPrompt] = useState(false);
+  const hasRequestedLocation = useRef(false);
+
+  const requestGeolocation = useCallback(() => {
+    if (!navigator.geolocation) {
+      setHasLocationPermission(false);
+      setLocationMessage(
+        "Geolocation is not supported in your browser. Showing default weather location.",
+      );
+      fetchAndSetWeather(defaultCoordinates);
+      return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        setHasLocationPermission(true);
+        const { latitude, longitude } = position.coords;
+        setLocationMessage("Using your current location for weather data.");
+        fetchAndSetWeather({ latitude, longitude });
+      },
+      (error) => {
+        setHasLocationPermission(false);
+        console.error("Geolocation error:", error);
+        setLocationMessage(
+          "Could not get your location. Showing default weather location.",
+        );
+        fetchAndSetWeather(defaultCoordinates);
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 10000,
+        maximumAge: 600000,
+      },
+    );
+  }, [fetchAndSetWeather]);
+
+  const handleLocationDecision = useCallback(
+    (consent) => {
+      if (hasRequestedLocation.current) return;
+
+      hasRequestedLocation.current = true;
+      setShowLocationPrompt(false);
+
+      if (consent === "granted") {
+        localStorage.setItem("wtwr-location-consent", "granted");
+        setHasLocationPermission(true);
+        setLocationMessage("Using your current location for weather data.");
+        requestGeolocation();
+        return;
+      }
+
+      localStorage.setItem("wtwr-location-consent", "denied");
+      setHasLocationPermission(false);
+      setLocationMessage(
+        "Location permission declined. Showing default weather location.",
+      );
+      fetchAndSetWeather(defaultCoordinates);
+    },
+    [fetchAndSetWeather, requestGeolocation],
+  );
+
+  // Fetch weather data on mount (ask user for location permission)
+  useEffect(() => {
+    if (hasRequestedLocation.current) {
+      return;
+    }
+
+    const storedConsent = localStorage.getItem("wtwr-location-consent");
+
+    if (storedConsent === "granted") {
+      handleLocationDecision("granted");
+      return;
+    }
+
+    if (storedConsent === "denied") {
+      handleLocationDecision("denied");
+      return;
+    }
+
+    setShowLocationPrompt(true);
+    setLocationMessage(
+      "Would you like to share your location for local weather?",
+    );
+  }, [handleLocationDecision]);
+
+  // Auto-clear location message after 15 seconds for clean UI
+  useEffect(() => {
+    if (!locationMessage) return;
+
+    const timeoutId = setTimeout(() => {
+      setLocationMessage("");
+    }, 15000);
+
+    return () => clearTimeout(timeoutId);
+  }, [locationMessage]);
+
+  // Auto-clear the status banner after 15 seconds
+  useEffect(() => {
+    if (hasLocationPermission === null) return;
+
+    setShowLocationStatus(true);
+    const timeoutId = setTimeout(() => {
+      setShowLocationStatus(false);
+    }, 15000);
+
+    return () => clearTimeout(timeoutId);
+  }, [hasLocationPermission]);
 
   // Loading state - from your hook!
   if (isLoading && clothingItems.length === 0) {
@@ -186,6 +304,40 @@ function App() {
 
   return (
     <div className="page">
+      {locationMessage && (
+        <div className="page__location-message">{locationMessage}</div>
+      )}
+
+      {hasLocationPermission !== null &&
+        !showLocationPrompt &&
+        showLocationStatus && (
+          <div className="page__location-status">
+            {hasLocationPermission
+              ? "Location permission granted"
+              : "Using default location settings"}
+          </div>
+        )}
+
+      {showLocationPrompt && (
+        <div
+          className="page__location-prompt-overlay"
+          role="dialog"
+          aria-modal="true"
+        >
+          <div className="page__location-prompt">
+            <p>Would you like to share your location to get local weather?</p>
+            <div className="page__location-prompt-actions">
+              <button onClick={() => handleLocationDecision("granted")}>
+                Yes
+              </button>
+              <button onClick={() => handleLocationDecision("denied")}>
+                No
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       <CurrentTemperatureUnitContext.Provider
         value={{ currentTemperatureUnit, handleToggleSwitchChange }}
       >
