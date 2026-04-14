@@ -26,5 +26,18 @@
     "eslint-plugin-react-hooks": "^4.6.2",
     "eslint-plugin-react-refresh": "^0.4.7",
     "vite": "^8.0.2"
-  }
+  },
+  "description": "A React-based web application that recommends clothing based on real-time local weather data. Built as part of a full-stack software engineering curriculum, this project demonstrates React component architecture, API integration, and responsive UI design.",
+  "main": "vite.config.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Noa-GH/se_project_react.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Noa-GH/se_project_react/issues"
+  },
+  "homepage": "https://github.com/Noa-GH/se_project_react#readme"
 }

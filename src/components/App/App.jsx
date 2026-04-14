@@ -110,7 +110,7 @@ function App() {
     }
   }
 
-  async function handleConfirmDelete(id) {
+  async function handleConfirmDelete() {
 
     if (!cardToDelete) {
       console.error("No card to delete");
