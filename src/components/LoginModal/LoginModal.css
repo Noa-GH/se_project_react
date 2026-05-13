@@ -1,0 +1,5 @@
+/* LoginModal-specific overrides.
+   Shared modal styles live in ModalWithForm.css.
+   The .modal__alt-text and .modal__alt-link classes are defined in RegisterModal.css —
+   if you import both modals, those rules already apply globally.
+   Add any login-specific overrides below. */

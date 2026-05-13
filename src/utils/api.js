@@ -41,6 +41,8 @@ function checkResponse(response) {
   return response.json();
 }
 
+// Unprotected (Public use)
+
 // GET /items
 export function getItems() {
   return fetch(`${baseUrl}/items`)
@@ -51,19 +53,27 @@ export function getItems() {
     });
 }
 
+// Protected Requests (Requires Token)
+
 // POST /items
-export function addItem({ name, weather, imageUrl }) {
+export function addItem({ name, weather, imageUrl }, token) {
   return fetch(`${baseUrl}/items`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      "Content-Type": "application/json",
+      authorization: `Bearer ${token}`,
+    },
     body: JSON.stringify({ name, imageUrl, weather }),
   }).then(checkResponse);
 }
 
 // DELETE /items/:id
-export function deleteItem(id) {
+export function deleteItem(id, token) {
   return fetch(`${baseUrl}/items/${id}`, {
     method: "DELETE",
+    headers: {
+      authorization: `Bearer ${token}`,
+    },
   })
     .then((response) => {
       return checkResponse(response);
@@ -75,10 +85,44 @@ export function deleteItem(id) {
 }
 
 // PATCH /items/:id
-export function updateItem(id, { name, imageUrl, weather }) {
+export function updateItem(id, { name, imageUrl, weather }, token) {
   return fetch(`${baseUrl}/items/${id}`, {
     method: "PATCH",
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      "Content-Type": "application/json",
+      authorization: `Bearer ${token}`,
+    },
     body: JSON.stringify({ name, imageUrl, weather }),
+  }).then(checkResponse);
+}
+
+// PATCH /user/me
+export function updateCurrentUser({ name, avatar }, token) {
+  return fetch(`${baseUrl}/users/me`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application-json",
+      authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ name, avatar }),
+  }).then(checkResponse);
+}
+
+export function addCardLike({ id, token }) {
+  return fetch(`${baseUrl}/items/${id}/likes`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application-json",
+      authorization: `Bearer ${token}`,
+    },
+  }).then(checkResponse);
+}
+
+export function removeCardLike({ id, token }) {
+  return fetch(`${baseUrl}/items/${id}/likes`, {
+    method: "DELETE",
+    headers: {
+      authorization: `Bearer ${token}`,
+    },
   }).then(checkResponse);
 }
