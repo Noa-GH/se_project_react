@@ -1,14 +1,24 @@
+import { useContext } from "react";
+import CurrentUserContext from "../../context/CurrentUserContext";
 import "./ItemModal.css";
 import closeButtonLight from "../../assets/icons/Close-button_light.svg";
 
 function ItemModal({ isOpen, onClose, selectedCard, onRequestDelete }) {
+  const currentUser = useContext(CurrentUserContext);
+
+  const ownerId =
+    typeof selectedCard?.owner === "string"
+      ? selectedCard.owner
+      : selectedCard?.owner?._id;
+
+  const isOwn = ownerId === currentUser?._id;
+
   function handleOverlayClick(e) {
     if (e.target === e.currentTarget) {
       onClose();
     }
   }
 
-  // Prefer the dark close icon for better visibility over item images.
   const closeButtonIcon = closeButtonLight;
 
   return (
@@ -33,13 +43,15 @@ function ItemModal({ isOpen, onClose, selectedCard, onRequestDelete }) {
         <div className="modal__footer">
           <p className="modal__caption">{selectedCard.name}</p>
           <p className="modal__weather">Weather: {selectedCard.weather}</p>
-          <button
-            className="modal__delete-btn"
-            type="button"
-            onClick={() => onRequestDelete(selectedCard)}
-          >
-            Delete Item
-          </button>
+          {isOwn && (
+            <button
+              className="modal__delete-btn"
+              type="button"
+              onClick={() => onRequestDelete(selectedCard)}
+            >
+              Delete Item
+            </button>
+          )}
         </div>
       </div>
     </div>
