@@ -26,6 +26,15 @@ Users can view individual clothing cards in a preview modal, and add new garment
 
 ---
 
+## Backend Repository
+
+**Backend repository:** https://github.com/Noa-GH/se_project_express
+
+The backend is a Node.js/Express REST API connected to a local MongoDB database.
+It handles authentication (JWT), clothing item CRUD, and likes.
+
+---
+
 ## Features
 
 - 🌤️ **Live weather fetching** via OpenWeatherMap API
@@ -39,17 +48,18 @@ Users can view individual clothing cards in a preview modal, and add new garment
 
 ## Tech Stack
 
-| Layer | Technology |
-|---|---|
-| UI Framework | React 18 |
-| Build Tool | Vite 5 |
-| Styling | Plain CSS (component-scoped) |
-| HTTP | Fetch API (native browser) |
-| Weather Data | [OpenWeatherMap API](https://openweathermap.org/api) |
-| Linting | ESLint with React + React Hooks plugins |
-| Font | Cabinet Grotesk (self-hosted WOFF) |
-| Deployment | GitHub Pages |
-| Assisted Tools | Claude, Gemini, ChatGPT, Co-Pilot, Agentic Managers | 
+| Layer          | Technology                                           |
+| -------------- | ---------------------------------------------------- |
+| UI Framework   | React 18                                             |
+| Build Tool     | Vite 5                                               |
+| Styling        | Plain CSS (component-scoped)                         |
+| HTTP           | Fetch API (native browser)                           |
+| Weather Data   | [OpenWeatherMap API](https://openweathermap.org/api) |
+| Linting        | ESLint with React + React Hooks plugins              |
+| Font           | Cabinet Grotesk (self-hosted WOFF)                   |
+| Deployment     | GitHub Pages                                         |
+| Assisted Tools | Claude, Gemini, ChatGPT, Co-Pilot, Agentic Managers  |
+
 ---
 
 ## Getting Started
@@ -79,12 +89,12 @@ The app will open automatically at `http://localhost:3000`.
 
 ### Available Scripts
 
-| Command | Description |
-|---|---|
-| `npm run dev` | Start the local dev server |
-| `npm run build` | Build for production |
-| `npm run preview` | Preview the production build |
-| `npm run lint` | Run ESLint across the project |
+| Command           | Description                   |
+| ----------------- | ----------------------------- |
+| `npm run dev`     | Start the local dev server    |
+| `npm run build`   | Build for production          |
+| `npm run preview` | Preview the production build  |
+| `npm run lint`    | Run ESLint across the project |
 
 ---
 
@@ -112,12 +122,15 @@ src/
 ## Known Issues & Upcoming Fixes
 
 ### 🌥️ Weather Card Image Scaling
+
 The weather card background image does not scale consistently as the viewport width changes. This is a CSS `object-fit` / responsive sizing issue currently under investigation and will be addressed in an upcoming update.
 
 ### 🔒 Form Validation Not Yet Implemented
+
 The add-garment form modal accepts user input but does not yet validate the name field or image URL. Validation logic and error state handling are planned for the next release, scheduled alongside the weather card fix.
 
 ### 🔄 API Integration Refinement
+
 Early development involved a hybrid approach to weather fetching — part hardcoded fallback, part async/await — which required significant refactoring. The current implementation uses a clean `fetch` + `.then()` chain with a fallback default state if the API call fails.
 
 ---
