@@ -76,11 +76,14 @@ function useClothingItems() {
   };
 
   const updateClothingItem = (updatedItem) => {
+    const updatedId = updatedItem._id || updatedItem.id;
     setClothingItems((items) =>
-      items.map((item) => (item._id === updatedItem._id ? updatedItem : item)),
+      items.map((item) => {
+        const itemId = item._id || item.id;
+        return itemId === updatedId ? updatedItem : item;
+      }),
     );
   };
-
   const clearError = () => setError(null);
 
   // Clear error

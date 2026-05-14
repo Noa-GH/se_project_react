@@ -25,7 +25,7 @@ export async function getWeatherData(coordinates, apiKey) {
 const baseUrl = "http://localhost:3001";
 
 function checkResponse(response) {
-  // console.log("API Response:", response.status, response.statusText);
+  console.log("API Response:", response.status, response.statusText);
 
   if (!response.ok) {
     throw new Error(
@@ -101,24 +101,23 @@ export function updateCurrentUser({ name, avatar }, token) {
   return fetch(`${baseUrl}/users/me`, {
     method: "PATCH",
     headers: {
-      "Content-Type": "application-json",
+      "Content-Type": "application/json",
       authorization: `Bearer ${token}`,
     },
     body: JSON.stringify({ name, avatar }),
   }).then(checkResponse);
 }
 
-export function addCardLike({ id, token }) {
+export function addCardLike(id, token) {
   return fetch(`${baseUrl}/items/${id}/likes`, {
     method: "PUT",
     headers: {
-      "Content-Type": "application-json",
       authorization: `Bearer ${token}`,
     },
   }).then(checkResponse);
 }
 
-export function removeCardLike({ id, token }) {
+export function removeCardLike(id, token) {
   return fetch(`${baseUrl}/items/${id}/likes`, {
     method: "DELETE",
     headers: {

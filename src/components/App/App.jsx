@@ -197,19 +197,25 @@ function App() {
 
   // ── Like / unlike ─────────────────────────────────────────────────────────
   function handleCardLike(item) {
+    console.log("handCardLike item:", item);
+
+    console.log("item._id:", item._id, "item.id:", item.id);
+
     if (!isLoggedIn || !currentUser) return;
 
     const token = localStorage.getItem("jwt");
 
     // likes[] may contain string IDs or populated user objects — handle both
-    const isLiked = item.likes?.some((likeEntry) => {
+    const isLiked = (item.likes || []).some((likeEntry) => {
       const likeId = typeof likeEntry === "string" ? likeEntry : likeEntry._id;
       return likeId === currentUser._id;
     });
 
+    const itemId = item._id || item.id;
+    console.log("itemId resolved:", itemId);
     const request = isLiked
-      ? api.removeCardLike(item._id, token)
-      : api.addCardLike(item._id, token);
+      ? api.removeCardLike(itemId, token)
+      : api.addCardLike(itemId, token);
 
     request
       .then((updatedCard) => updateClothingItem(updatedCard))
@@ -261,26 +267,6 @@ function App() {
         setIsLoggedIn(false);
       });
   }, []);
-
-  // ── Loading / error states ────────────────
-  if (isLoading && clothingItems.length === 0) {
-    return (
-      <div className="page">
-        <div className="page__loading">Loading clothing items...</div>
-      </div>
-    );
-  }
-
-  if (error && clothingItems.length === 0) {
-    return (
-      <div className="page">
-        <div className="page__error">
-          Error: {error}
-          <button onClick={refetch}>Try Again</button>
-        </div>
-      </div>
-    );
-  }
 
   // ── Render ────────────────────────────────────────────────────────────────
   return (
