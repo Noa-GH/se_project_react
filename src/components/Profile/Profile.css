@@ -6,15 +6,9 @@
   padding: 0;
 }
 
-.profile__sidebar {
-  width: 300px;
+.sidebar {
   flex-shrink: 0;
 }
-
-/* .clothes-section {
-  flex: 0 1 auto;
-  min-width: 0;
-} */
 
 @media screen and (max-width: 768px) {
   .profile {
@@ -23,11 +17,7 @@
     gap: 40px;
   }
 
-  .profile__sidebar {
+  .sidebar {
     width: 100%;
   }
-
-  /* .clothes-section {
-    width: 100%;
-  } */
 }

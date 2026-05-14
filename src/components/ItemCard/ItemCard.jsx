@@ -5,15 +5,18 @@ import "./ItemCard.css";
 function ItemCard({ item, onCardClick, onCardLike }) {
   const currentUser = useContext(CurrentUserContext);
 
+  // likes[] may contain string IDs or populated user objects — handle both
   const isLiked = item.likes?.some((likeEntry) => {
     const likeId = typeof likeEntry === "string" ? likeEntry : likeEntry._id;
     return likeId === currentUser?._id;
   });
 
-  const likeButtonClassName = `item-card__like-btn ${isLiked ? "item-card__like-btn_active" : ""};`;
+  const likeButtonClassName = `item-card__like-btn ${
+    isLiked ? "item-card__like-btn_active" : ""
+  }`;
 
   function handleLike(e) {
-    e.stopProagation(); //This doesn't trigger onCardClick
+    e.stopPropagation();
     onCardLike?.(item);
   }
 
@@ -21,17 +24,18 @@ function ItemCard({ item, onCardClick, onCardLike }) {
     <li className="item-card">
       <div className="item-card__header">
         <h2 className="item-card__name">{item.name}</h2>
+
+        {/* Like button — only rendered for logged-in users */}
         {currentUser && (
           <button
             className={likeButtonClassName}
             type="button"
             onClick={handleLike}
             aria-label={isLiked ? "Unlike" : "Like"}
-          >
-            Delete
-          </button>
+          />
         )}
       </div>
+
       <img
         src={item.imageUrl}
         alt={item.name}
