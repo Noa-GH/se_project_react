@@ -1,41 +1,95 @@
-import "./Header.css";
-import ToggleSwitch from "../ToggleSwitch/ToggleSwitch.jsx";
-import logo from "../../assets/icons/logo/Logo.svg";
+import { useContext } from "react";
 import { Link } from "react-router-dom";
-
-const currentDate = new Date().toLocaleDateString("default", {
-  day: "numeric",
-  month: "long",
-});
+import CurrentUserContext from "../../context/CurrentUserContext.js";
+import ToggleSwitch from "../ToggleSwitch/ToggleSwitch.jsx";
+import "./Header.css";
 
 function Header({
-  onAddClothesClick,
   weatherData,
-  toggleSwitch,
-  onToggleSwitch,
-  currentUser,
+  isLoggedIn,
+  onAddClothesClick,
+  onRegisterClick,
+  onLoginClick,
 }) {
+  const currentUser = useContext(CurrentUserContext);
+
+  const currentDate = new Date().toLocaleDateString("default", {
+    day: "numeric",
+    month: "long",
+  });
+
+  const userInitial = currentUser?.name?.charAt(0).toUpperCase();
+
   return (
     <header className="header">
-      <div className="header__logo">
-        <Link to="/">
-          <img src={logo} alt="WTWR logo" />
-        </Link>
-      </div>
-      <div className="header__info">
-        <p className="header__info-text">{currentDate},</p>
-        <p className="header__info-text">{weatherData.city}</p>
-      </div>
-      <div className="header__nav">
-        <ToggleSwitch isOn={toggleSwitch} onToggle={onToggleSwitch} />
-        <button className="header__nav-button" onClick={onAddClothesClick}>
-          + Add Clothes
-        </button>
-      </div>
-      <Link to="/profile" className="header__profile">
-        <p className="header__profile-username">{currentUser.name}</p>
-        <img src={currentUser.avatar} alt={`${currentUser.name}'s avatar`} />
+      {/* Left side — logo + date/city (unchanged from your original) */}
+      <Link to="/" className="header__logo">
+        WTWR
       </Link>
+
+      <div className="header__info">
+        <p className="header__info-text">
+          {currentDate}, {weatherData?.city || ""}
+        </p>
+      </div>
+
+      {/* Right side — nav changes based on login state */}
+      <nav className="header__nav">
+        <ToggleSwitch />
+
+        {isLoggedIn ? (
+          <>
+            <button
+              className="header__nav-button"
+              type="button"
+              onClick={onAddClothesClick}
+            >
+              + Add clothes
+            </button>
+
+            <Link to="/profile" className="header__profile">
+              <p className="header__profile-username">{currentUser?.name}</p>
+
+              {currentUser?.avatar ? (
+                <img
+                  className="header__profile-img"
+                  src={currentUser.avatar}
+                  alt={currentUser.name}
+                  onError={(e) => {
+                    e.target.style.display = "none";
+                    e.target.nextSibling.style.display = "flex";
+                  }}
+                />
+              ) : null}
+
+              {/* Placeholder circle with first initial */}
+              <div
+                className="header__profile-img header__profile-img_placeholder"
+                style={{ display: currentUser?.avatar ? "none" : "flex" }}
+              >
+                {userInitial}
+              </div>
+            </Link>
+          </>
+        ) : (
+          <>
+            <button
+              className="header__nav-button"
+              type="button"
+              onClick={onRegisterClick}
+            >
+              Sign Up
+            </button>
+            <button
+              className="header__nav-button"
+              type="button"
+              onClick={onLoginClick}
+            >
+              Log In
+            </button>
+          </>
+        )}
+      </nav>
     </header>
   );
 }

@@ -84,3 +84,13 @@
   border-radius: 50%;
   object-fit: cover;
 }
+
+.header__profile-img_placeholder {
+  background-color: #313131;
+  color: #fff;
+  font-size: 18px;
+  font-weight: 700;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
