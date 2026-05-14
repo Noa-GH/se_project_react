@@ -112,10 +112,6 @@ function ModalWithForm({
     }
   }
 
-  // Debug logging (commented out for production)
-  // console.log('fieldSchemas.imageUrl:', fieldSchemas.imageUrl);
-  // console.log('label:', fieldSchemas.imageUrl?.label);
-
   return (
     <div
       className={`modal modal_type_${name} ${isOpen ? "modal_is-opened" : ""}`}
@@ -212,8 +208,9 @@ function ModalWithForm({
 
           {/* Submit Button - Disabled when form is invalid or loading */}
           <button
-            className={`modal__submit-btn modal__submit-button ${(!isFormValid || isLoading) ? "modal__submit-button_disabled" : ""
-              }`}
+            className={`modal__submit-btn modal__submit-button ${
+              !isFormValid || isLoading ? "modal__submit-button_disabled" : ""
+            }`}
             type="submit"
             disabled={!isFormValid || isLoading}
           >
