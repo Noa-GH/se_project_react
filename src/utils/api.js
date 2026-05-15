@@ -25,8 +25,6 @@ export async function getWeatherData(coordinates, apiKey) {
 const baseUrl = "http://localhost:3001";
 
 function checkResponse(response) {
-  console.log("API Response:", response.status, response.statusText);
-
   if (!response.ok) {
     throw new Error(
       `Failed to fetch items (status ${response.status}) ${response.statusText}`,

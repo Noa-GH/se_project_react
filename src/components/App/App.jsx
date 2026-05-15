@@ -197,10 +197,6 @@ function App() {
 
   // ── Like / unlike ─────────────────────────────────────────────────────────
   function handleCardLike(item) {
-    console.log("handCardLike item:", item);
-
-    console.log("item._id:", item._id, "item.id:", item.id);
-
     if (!isLoggedIn || !currentUser) return;
 
     const token = localStorage.getItem("jwt");
@@ -212,7 +208,6 @@ function App() {
     });
 
     const itemId = item._id || item.id;
-    console.log("itemId resolved:", itemId);
     const request = isLiked
       ? api.removeCardLike(itemId, token)
       : api.addCardLike(itemId, token);

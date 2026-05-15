@@ -34,7 +34,7 @@ function DeleteConfirmationModal({ isOpen, onClose, onConfirm, itemName }) {
             type="button"
             onClick={onConfirm}
           >
-            Delete
+            Yes, delete item
           </button>
           <button
             className="modal__confirm-btn modal__confirm-btn_type_cancel"

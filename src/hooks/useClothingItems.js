@@ -43,19 +43,15 @@ function useClothingItems() {
 
   // Delete item with improved error handling
   const handleDeleteItem = async (id, token) => {
-    console.log("useClothingItems: Deleting item with ID:", id, typeof id);
-
     try {
       setIsLoading(true);
       setError(null);
 
       // Make the API call
       await deleteItem(id, token);
-      console.log("useClothingItems: API delete successful for ID:", id);
 
       // Update local state - filter out the deleted item
       setClothingItems((prevItems) => {
-        console.log("Previous items:", prevItems);
         const filteredItems = prevItems.filter((item) => {
           const itemId = String(item.id ?? item._id);
           const deleteId = String(id);
