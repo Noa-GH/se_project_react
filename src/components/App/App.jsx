@@ -1,7 +1,7 @@
 import "./App.css";
 import Header from "../Header/Header";
 import Profile from "../Profile/Profile.jsx";
-import Main from "../Main/Main";
+import Main from "../Main/Main.1.jsx";
 import Footer from "../Footer/Footer";
 import AddItemModal from "../AddItemModal/AddItemModal.jsx";
 import ItemModal from "../ItemModal/ItemModal";
@@ -12,7 +12,7 @@ import EditProfileModal from "../EditProfileModal/EditProfileModal";
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import { getWeatherData } from "../../utils/api";
-import { coordinates, APIkey } from "../../utils/constants";
+import { coordinates, apiKey } from "../../utils/constants";
 import CurrentTemperatureUnitContext from "../../context/CurrentTemperatureUnitContext";
 import CurrentUserContext from "../../context/CurrentUserContext";
 import { useState, useEffect } from "react";
@@ -229,7 +229,7 @@ function App() {
   }, [activeModal]);
 
   useEffect(() => {
-    getWeatherData(coordinates, APIkey)
+    getWeatherData(coordinates, apiKey)
       .then((data) => {
         const weather = {};
         weather.temperature = {};
@@ -238,6 +238,17 @@ function App() {
         weather.city = data.name;
         weather.condition = data.weather[0].description;
         weather.image = `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
+
+        // Determine weather type based on Fahrenheit temperature
+        const tempF = weather.temperature.F;
+        if (tempF >= 86) {
+          weather.type = "hot";
+        } else if (tempF >= 66) {
+          weather.type = "warm";
+        } else {
+          weather.type = "cold";
+        }
+
         setWeatherData(weather);
       })
       .catch((error) => {

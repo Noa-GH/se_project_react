@@ -43,12 +43,7 @@ function checkResponse(response) {
 
 // GET /items
 export function getItems() {
-  return fetch(`${baseUrl}/items`)
-    .then(checkResponse)
-    .catch((error) => {
-      console.error("Error fetching items:", error);
-      throw error;
-    });
+  return fetch(`${baseUrl}/items`).then(checkResponse);
 }
 
 // Protected Requests (Requires Token)
@@ -72,14 +67,9 @@ export function deleteItem(id, token) {
     headers: {
       authorization: `Bearer ${token}`,
     },
-  })
-    .then((response) => {
-      return checkResponse(response);
-    })
-    .catch((error) => {
-      console.error("Error deleting item:", error);
-      throw error;
-    });
+  }).then((response) => {
+    return checkResponse(response);
+  });
 }
 
 // PATCH /items/:id

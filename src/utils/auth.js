@@ -1,7 +1,18 @@
 const baseUrl = "http://localhost:3001";
 
-function checkResponse(res) {
-  return res.ok ? res.json() : Promise.reject(`Error: ${res.status}`);
+function checkResponse(response) {
+  if (!response.ok) {
+    throw new Error(
+      `Failed to fetch items (status ${response.status}) ${response.statusText}`,
+    );
+  }
+
+  // DELETE requests typically return 204 No Content or 200 OK with empty body
+  if (response.status === 204) {
+    return null;
+  }
+
+  return response.json();
 }
 
 export function register({ name, avatar, email, password }) {
