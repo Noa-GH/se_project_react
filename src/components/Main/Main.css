@@ -31,3 +31,18 @@
   margin: 34px 0 0;
   list-style: none; /* since it's a ul */
 }
+
+/* Cards layout used by Main.jsx */
+.cards {
+  display: flex;
+  flex-direction: column;
+}
+
+.cards__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding: 0;
+  margin: 34px 0 0;
+  list-style: none;
+}

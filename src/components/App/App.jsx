@@ -1,7 +1,7 @@
 import "./App.css";
 import Header from "../Header/Header";
 import Profile from "../Profile/Profile.jsx";
-import Main from "../Main/Main.1.jsx";
+import Main from "../Main/Main.jsx";
 import Footer from "../Footer/Footer";
 import AddItemModal from "../AddItemModal/AddItemModal.jsx";
 import ItemModal from "../ItemModal/ItemModal";
