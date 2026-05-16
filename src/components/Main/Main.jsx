@@ -14,11 +14,12 @@ function Main({
   const { currentTemperatureUnit } = useContext(CurrentTemperatureUnitContext);
 
   const weatherType = weatherData?.type;
-  const filteredItems = clothingItems.filter(
-    (item) => item.weather === weatherType,
+  const filteredItems = (clothingItems ?? []).filter((item) =>
+    typeof weatherType === "undefined" || weatherType === null
+      ? true
+      : item.weather === weatherType,
   );
 
-  // Your weatherData uses temperature.F / temperature.C
   const temperature = weatherData?.temperature?.[currentTemperatureUnit] ?? "";
 
   return (
