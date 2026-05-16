@@ -1,6 +1,6 @@
 # 👗 WTWR — What to Wear?
 
-A React-based web application that recommends clothing based on real-time local weather data. Built as part of a full-stack software engineering curriculum, this project demonstrates React component architecture, API integration, and responsive UI design.
+A React-based web application that recommends clothing based on real-time local weather data. Built as part of a full-stack software engineering curriculum, this project demonstrates React component architecture, API integration, stateful UI flows, and responsive design.
 
 🔗 **[Live Demo](https://Noa-GH.github.io/se_project_react/)**
 
@@ -9,6 +9,7 @@ A React-based web application that recommends clothing based on real-time local 
 ## 📋 Table of Contents
 
 - [Overview](#overview)
+- [Backend](#backend)
 - [Features](#features)
 - [Tech Stack](#tech-stack)
 - [Getting Started](#getting-started)
@@ -20,45 +21,52 @@ A React-based web application that recommends clothing based on real-time local 
 
 ## Overview
 
-WTWR fetches live weather data for a given location using the OpenWeatherMap API and filters a wardrobe of clothing items by weather type — **hot**, **warm**, or **cold** — to suggest what you should wear today.
+WTWR fetches current weather data from the OpenWeatherMap API and filters a wardrobe of clothing items by weather type — **hot**, **warm**, or **cold** — to recommend what to wear today.
 
-Users can view individual clothing cards in a preview modal, and add new garments through a form modal with radio button selection for weather type.
+The app includes signed-in user flows, a protected profile page, modal forms for adding items, like/unlike interactions, and an F/C temperature toggle.
 
 ---
 
-## Backend Repository
+## Backend
 
-**Backend repository:** https://github.com/Noa-GH/se_project_express
+The project includes a local mock item API powered by `json-server` and also supports integration with a full backend repository.
 
-The backend is a Node.js/Express REST API connected to a local MongoDB database.
-It handles authentication (JWT), clothing item CRUD, and likes.
+- Local mock item API: `npm run server` serves `db.json` on `http://localhost:3001` (requires `json-server` to be installed globally or otherwise available in your environment)
+- Full backend repo: https://github.com/Noa-GH/se_project_express
+
+The frontend is wired for JWT auth and profile endpoints, so the complete auth and ownership experience is available when paired with a compatible backend service.
 
 ---
 
 ## Features
 
 - 🌤️ **Live weather fetching** via OpenWeatherMap API
-- 👔 **Dynamic clothing recommendations** filtered by current temperature
-- 🪟 **Modal system** — item preview modal and an add-garment form modal
-- ⌨️ **Keyboard support** — press `Escape` to close any open modal
-- 🖱️ **Overlay click to close** modals
-- 📱 Responsive layout built with CSS Flexbox and Grid
+- 👔 **Weather-based clothing recommendations** filtered by hot / warm / cold
+- 🌡️ **Celsius / Fahrenheit toggle** for temperature display
+- 🪟 **Modal-driven item preview and add flow**
+- 🔐 **User registration / login** with protected profile route
+- 🧑‍💼 **Profile editing** for name and avatar updates
+- ❤️ **Like / unlike clothing items** for authenticated users
+- 🗑️ **Delete confirmation modal** for owned items
+- 🧪 **Form validation** with inline field state and disabled submit controls
+- 🚧 **Local JSON server backend** for clothing item CRUD during development
+- ⌨️ **Escape key and overlay click to close modals**
 
 ---
 
 ## Tech Stack
 
-| Layer          | Technology                                           |
-| -------------- | ---------------------------------------------------- |
-| UI Framework   | React 18                                             |
-| Build Tool     | Vite 5                                               |
-| Styling        | Plain CSS (component-scoped)                         |
-| HTTP           | Fetch API (native browser)                           |
-| Weather Data   | [OpenWeatherMap API](https://openweathermap.org/api) |
-| Linting        | ESLint with React + React Hooks plugins              |
-| Font           | Cabinet Grotesk (self-hosted WOFF)                   |
-| Deployment     | GitHub Pages                                         |
-| Assisted Tools | Claude, Gemini, ChatGPT, Co-Pilot, Agentic Managers  |
+| Layer        | Technology                                           |
+| ------------ | ---------------------------------------------------- |
+| UI Framework | React 18                                             |
+| Build Tool   | Vite 5                                               |
+| Styling      | Plain CSS                                            |
+| HTTP         | Fetch API (native browser)                           |
+| Weather Data | [OpenWeatherMap API](https://openweathermap.org/api) |
+| Mock Backend | json-server                                          |
+| Linting      | ESLint with React + React Hooks plugins              |
+| Font         | Cabinet Grotesk (self-hosted WOFF)                   |
+| Deployment   | GitHub Pages                                         |
 
 ---
 
@@ -80,21 +88,32 @@ cd se_project_react
 
 # Install dependencies
 npm install
+```
 
-# Start the development server
+### Run locally
+
+```bash
+# If json-server is not installed globally, install it first
+npm install -g json-server
+
+# Start the local item API server
+npm run server
+
+# In another terminal, start the frontend
 npm run dev
 ```
 
-The app will open automatically at `http://localhost:3000`.
+The frontend launches on `http://localhost:3002` by default.
 
 ### Available Scripts
 
-| Command           | Description                   |
-| ----------------- | ----------------------------- |
-| `npm run dev`     | Start the local dev server    |
-| `npm run build`   | Build for production          |
-| `npm run preview` | Preview the production build  |
-| `npm run lint`    | Run ESLint across the project |
+| Command           | Description                                      |
+| ----------------- | ------------------------------------------------ |
+| `npm run dev`     | Start the local dev server                       |
+| `npm run build`   | Build for production                             |
+| `npm run preview` | Preview the production build                     |
+| `npm run lint`    | Run ESLint across the project                    |
+| `npm run server`  | Start json-server for local `/items` API storage |
 
 ---
 
@@ -104,17 +123,28 @@ The app will open automatically at `http://localhost:3000`.
 src/
 ├── assets/              # Icons, fonts, and weather images
 ├── components/
-│   ├── App/             # Root component, state management, API calls
-│   ├── Header/          # Site header with date, city, nav, and avatar
-│   ├── Main/            # Weather card + clothing recommendations
+│   ├── App/             # Root component, routing, app state
+│   ├── Header/          # Header with weather, nav, login/profile
+│   ├── Main/            # Weather card + filtered clothing list
 │   ├── Footer/          # Footer with developer credit and year
-│   ├── WeatherCard/     # Displays current temperature and weather image
-│   ├── ItemCard/        # Individual clothing card (image + name)
-│   ├── ItemModal/       # Preview modal for selected clothing item
-│   └── ModalWithForm/   # Add-garment form modal (name, image URL, weather type)
+│   ├── WeatherCard/     # Displays temperature and weather image
+│   ├── ItemCard/        # Individual clothing card UI
+│   ├── ItemModal/       # Selected item preview and delete action
+│   ├── AddItemModal/    # Add-garment modal wrapper
+│   ├── RegisterModal/   # Sign up modal
+│   ├── LoginModal/      # Log in modal
+│   ├── EditProfileModal/# Profile edit modal
+│   ├── DeleteConfirmationModal/ # Confirm deletion modal
+│   ├── SideBar/         # Profile sidebar actions
+│   ├── ClothesSection/  # Authenticated user's item list
+│   ├── ProtectedRoute/  # Route guard for authenticated pages
+│   ├── ToggleSwitch/    # Temperature unit switch
+│   └── ModalWithForm/   # Shared modal form with validation
 └── utils/
-    ├── constants.js     # Default clothing items, coordinates, API key
-    └── weatherApi.js    # Fetch wrapper for OpenWeatherMap
+    ├── api.js           # Weather and item CRUD API helpers
+    ├── auth.js          # Register, login, token validation
+    ├── constants.js     # Default coordinates and API key
+    └── validation/      # Form validation schema and utilities
 ```
 
 ---
@@ -123,15 +153,11 @@ src/
 
 ### 🌥️ Weather Card Image Scaling
 
-The weather card background image does not scale consistently as the viewport width changes. This is a CSS `object-fit` / responsive sizing issue currently under investigation and will be addressed in an upcoming update.
+The weather card image may require additional responsive tuning in some viewport sizes.
 
-### 🔒 Form Validation Not Yet Implemented
+### 🔒 Backend auth integration
 
-The add-garment form modal accepts user input but does not yet validate the name field or image URL. Validation logic and error state handling are planned for the next release, scheduled alongside the weather card fix.
-
-### 🔄 API Integration Refinement
-
-Early development involved a hybrid approach to weather fetching — part hardcoded fallback, part async/await — which required significant refactoring. The current implementation uses a clean `fetch` + `.then()` chain with a fallback default state if the API call fails.
+The frontend is prepared for JWT auth and profile routes, but pairing with a compatible backend server is required for full registration, login, and token validation.
 
 ---
 
@@ -140,10 +166,10 @@ Early development involved a hybrid approach to weather fetching — part hardco
 - [x] Fix weather card image responsiveness
 - [x] Implement form input validation (name + URL fields)
 - [x] Enable/disable submit button based on form validity
-- [ ] Add ability to delete clothing items
-- [ ] Connect to a backend server for persistent item storage
-- [ ] Add Celsius/Fahrenheit temperature toggle
-- [ ] Mobile-responsive layout improvements
+- [x] Add ability to delete clothing items
+- [x] Add Celsius/Fahrenheit temperature toggle
+- [ ] Connect to a backend server for persistent auth and item storage
+- [ ] Improve mobile-responsive layout further
 
 ---
 
