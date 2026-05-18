@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import CurrentUserContext from "../../context/CurrentUserContext.js";
 import ToggleSwitch from "../ToggleSwitch/ToggleSwitch.jsx";
 import "./Header.css";
+import logo from "../../assets/icons/logo/Logo.svg";
 
 function Header({
   weatherData,
@@ -24,7 +25,7 @@ function Header({
     <header className="header">
       {/* Left side — logo + date/city (unchanged from your original) */}
       <Link to="/" className="header__logo">
-        WTWR
+        <img src={logo} alt="WTWR logo" className="header__logo-img" />
       </Link>
 
       <div className="header__info">
