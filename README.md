@@ -103,7 +103,7 @@ npm run server
 npm run dev
 ```
 
-The frontend launches on `http://localhost:3002` by default.
+The frontend launches on `http://localhost:3000` by default.
 
 ### Available Scripts
 

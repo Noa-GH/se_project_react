@@ -1,4 +1,10 @@
 // =============================================
+// Imports
+// =============================================
+
+import { baseUrl } from "../utils/constants";
+
+// =============================================
 // OpenWeatherMap API
 // =============================================
 
@@ -21,8 +27,6 @@ export async function getWeatherData(coordinates, apiKey) {
 // =============================================
 // Clothing Items API (json-server)
 // =============================================
-
-const baseUrl = "http://localhost:3001";
 
 function checkResponse(response) {
   if (!response.ok) {
