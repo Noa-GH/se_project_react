@@ -1,8 +1,8 @@
 # 👗 WTWR — What to Wear?
 
-A React-based web application that recommends clothing based on real-time local weather data. Built as part of a full-stack software engineering curriculum, this project demonstrates React component architecture, API integration, stateful UI flows, and responsive design.
+A React-based full-stack web application that recommends clothing based on real-time local weather data and communicates with a deployed Express/MongoDB backend. Built as part of a full-stack software engineering curriculum, this project demonstrates React component architecture, API integration, JWT auth, protected routes, and responsive UI design.
 
-🔗 **[Live Demo](https://Noa-GH.github.io/se_project_react/)**
+🔗 **[Live Demo](https://WeatherGCPServer.jumpingcrab.com)**
 
 ---
 
@@ -12,6 +12,8 @@ A React-based web application that recommends clothing based on real-time local 
 - [Backend](#backend)
 - [Features](#features)
 - [Tech Stack](#tech-stack)
+- [Deployment](#deployment)
+- [Demo](#demo)
 - [Getting Started](#getting-started)
 - [Project Structure](#project-structure)
 - [Known Issues & Upcoming Fixes](#known-issues--upcoming-fixes)
@@ -29,12 +31,15 @@ The app includes signed-in user flows, a protected profile page, modal forms for
 
 ## Backend
 
-The project includes a local mock item API powered by `json-server` and also supports integration with a full backend repository.
+This project is deployed as a full-stack application. The React frontend communicates with a live Express REST API backed by MongoDB and hosted on Google Cloud Platform.
 
-- Local mock item API: `npm run server` serves `db.json` on `http://localhost:3001` (requires `json-server` to be installed globally or otherwise available in your environment)
-- Full backend repo: https://github.com/Noa-GH/se_project_express
+- Live full-stack application: https://WeatherGCPServer.jumpingcrab.com
+- Deployed backend API base: https://api.WeatherGCPServer.jumpingcrab.com
+- Backend repository: https://github.com/Noa-GH/se_project_express
 
-The frontend is wired for JWT auth and profile endpoints, so the complete auth and ownership experience is available when paired with a compatible backend service.
+For local development, the project still supports a mock item API powered by `json-server`.
+
+The deployed backend enables JWT authentication, profile editing, item creation, deletion, likes, and protected routes.
 
 ---
 
@@ -44,12 +49,11 @@ The frontend is wired for JWT auth and profile endpoints, so the complete auth a
 - 👔 **Weather-based clothing recommendations** filtered by hot / warm / cold
 - 🌡️ **Celsius / Fahrenheit toggle** for temperature display
 - 🪟 **Modal-driven item preview and add flow**
-- 🔐 **User registration / login** with protected profile route
+- 🔐 **User registration / login** with JWT auth and protected profile routes
 - 🧑‍💼 **Profile editing** for name and avatar updates
 - ❤️ **Like / unlike clothing items** for authenticated users
-- 🗑️ **Delete confirmation modal** for owned items
+- 🗑️ **Item creation and deletion** with ownership checks and confirmations
 - 🧪 **Form validation** with inline field state and disabled submit controls
-- 🚧 **Local JSON server backend** for clothing item CRUD during development
 - ⌨️ **Escape key and overlay click to close modals**
 
 ---
@@ -63,10 +67,30 @@ The frontend is wired for JWT auth and profile endpoints, so the complete auth a
 | Styling      | Plain CSS                                            |
 | HTTP         | Fetch API (native browser)                           |
 | Weather Data | [OpenWeatherMap API](https://openweathermap.org/api) |
-| Mock Backend | json-server                                          |
+| Backend API  | Express + MongoDB on GCP                             |
 | Linting      | ESLint with React + React Hooks plugins              |
 | Font         | Cabinet Grotesk (self-hosted WOFF)                   |
-| Deployment   | GitHub Pages                                         |
+| Deployment   | Google Cloud Platform with custom production config  |
+
+---
+
+## Deployment
+
+Deployed as a full-stack application using Google Cloud Platform for backend hosting and production environment configuration. The application uses a React frontend, Express REST API, MongoDB persistence, JWT authentication, and protected user actions.
+
+---
+
+## Demo
+
+Below are screenshots showing the live full-stack experience for signup/login, adding items, liking items, and weather recommendations.
+
+![Signup / Login](./screenshots/signup-login.png)
+
+![Add Item](./screenshots/add-item.png)
+
+![Like Item](./screenshots/like-item.png)
+
+![Weather Recommendations](./screenshots/weather-recs.png)
 
 ---
 
@@ -155,10 +179,6 @@ src/
 
 The weather card image may require additional responsive tuning in some viewport sizes.
 
-### 🔒 Backend auth integration
-
-The frontend is prepared for JWT auth and profile routes, but pairing with a compatible backend server is required for full registration, login, and token validation.
-
 ---
 
 ## Roadmap
@@ -168,7 +188,7 @@ The frontend is prepared for JWT auth and profile routes, but pairing with a com
 - [x] Enable/disable submit button based on form validity
 - [x] Add ability to delete clothing items
 - [x] Add Celsius/Fahrenheit temperature toggle
-- [ ] Connect to a backend server for persistent auth and item storage
+- [x] Deploy full-stack backend and connect persistent auth/item storage
 - [ ] Improve mobile-responsive layout further
 
 ---
